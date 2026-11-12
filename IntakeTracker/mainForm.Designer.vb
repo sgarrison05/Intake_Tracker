@@ -17,470 +17,520 @@ Partial Class mainForm
 
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.grpCase = New System.Windows.Forms.GroupBox()
-        Me.lblChild = New System.Windows.Forms.Label()
-        Me.txtChildName = New System.Windows.Forms.TextBox()
-        Me.lblOffense = New System.Windows.Forms.Label()
-        Me.txtOffense = New System.Windows.Forms.TextBox()
-        Me.lblCaseNo = New System.Windows.Forms.Label()
-        Me.txtCaseNo = New System.Windows.Forms.TextBox()
-        Me.lblChildId = New System.Windows.Forms.Label()
-        Me.txtChildId = New System.Windows.Forms.TextBox()
-        Me.lblStatus = New System.Windows.Forms.Label()
-        Me.txtStatus = New System.Windows.Forms.TextBox()
-        Me.lblPrePact = New System.Windows.Forms.Label()
-        Me.dtpPrePact = New System.Windows.Forms.DateTimePicker()
-        Me.lblDob = New System.Windows.Forms.Label()
-        Me.dtpDob = New System.Windows.Forms.DateTimePicker()
-        Me.lblInitial = New System.Windows.Forms.Label()
-        Me.dtpInitialSubmit = New System.Windows.Forms.DateTimePicker()
-        Me.lblLastStatus = New System.Windows.Forms.Label()
-        Me.dtpLastStatus = New System.Windows.Forms.DateTimePicker()
-        Me.chkIntake = New System.Windows.Forms.CheckBox()
-        Me.grpResults = New System.Windows.Forms.GroupBox()
-        Me.lblPrePactCap = New System.Windows.Forms.Label()
-        Me.lblPrePactDays = New System.Windows.Forms.Label()
-        Me.lblAgeCap = New System.Windows.Forms.Label()
-        Me.lblAge = New System.Windows.Forms.Label()
-        Me.lblPendingCap = New System.Windows.Forms.Label()
-        Me.lblPending = New System.Windows.Forms.Label()
-        Me.lblThresholdCap = New System.Windows.Forms.Label()
-        Me.lblThreshold = New System.Windows.Forms.Label()
-        Me.lblStaffingCap = New System.Windows.Forms.Label()
-        Me.lblStaffing = New System.Windows.Forms.Label()
-        Me.grpNotes = New System.Windows.Forms.GroupBox()
-        Me.txtNotes = New System.Windows.Forms.TextBox()
-        Me.grpRecords = New System.Windows.Forms.GroupBox()
-        Me.lvRecords = New System.Windows.Forms.ListView()
-        Me.colChildId = New System.Windows.Forms.ColumnHeader()
-        Me.colCaseNo = New System.Windows.Forms.ColumnHeader()
-        Me.colChild = New System.Windows.Forms.ColumnHeader()
-        Me.colOffense = New System.Windows.Forms.ColumnHeader()
-        Me.colStatus = New System.Windows.Forms.ColumnHeader()
-        Me.colPrePact = New System.Windows.Forms.ColumnHeader()
-        Me.colThreshold = New System.Windows.Forms.ColumnHeader()
-        Me.colIntake = New System.Windows.Forms.ColumnHeader()
-        Me.btnCalculate = New System.Windows.Forms.Button()
-        Me.btnSave = New System.Windows.Forms.Button()
-        Me.btnClear = New System.Windows.Forms.Button()
-        Me.btnDelete = New System.Windows.Forms.Button()
-        Me.grpCase.SuspendLayout()
-        Me.grpResults.SuspendLayout()
-        Me.grpNotes.SuspendLayout()
-        Me.grpRecords.SuspendLayout()
-        Me.SuspendLayout()
-        '
-        'grpCase
-        '
-        Me.grpCase.Controls.Add(Me.lblChild)
-        Me.grpCase.Controls.Add(Me.txtChildName)
-        Me.grpCase.Controls.Add(Me.lblOffense)
-        Me.grpCase.Controls.Add(Me.txtOffense)
-        Me.grpCase.Controls.Add(Me.lblCaseNo)
-        Me.grpCase.Controls.Add(Me.txtCaseNo)
-        Me.grpCase.Controls.Add(Me.lblChildId)
-        Me.grpCase.Controls.Add(Me.txtChildId)
-        Me.grpCase.Controls.Add(Me.lblStatus)
-        Me.grpCase.Controls.Add(Me.txtStatus)
-        Me.grpCase.Controls.Add(Me.lblPrePact)
-        Me.grpCase.Controls.Add(Me.dtpPrePact)
-        Me.grpCase.Controls.Add(Me.lblDob)
-        Me.grpCase.Controls.Add(Me.dtpDob)
-        Me.grpCase.Controls.Add(Me.lblInitial)
-        Me.grpCase.Controls.Add(Me.dtpInitialSubmit)
-        Me.grpCase.Controls.Add(Me.lblLastStatus)
-        Me.grpCase.Controls.Add(Me.dtpLastStatus)
-        Me.grpCase.Controls.Add(Me.chkIntake)
-        Me.grpCase.Location = New System.Drawing.Point(12, 12)
-        Me.grpCase.Name = "grpCase"
-        Me.grpCase.Size = New System.Drawing.Size(540, 305)
-        Me.grpCase.TabIndex = 0
-        Me.grpCase.TabStop = False
-        Me.grpCase.Text = "Case Information"
-        '
-        'lblChild
-        '
-        Me.lblChild.AutoSize = True
-        Me.lblChild.Location = New System.Drawing.Point(12, 31)
-        Me.lblChild.Name = "lblChild"
-        Me.lblChild.Text = "Child Name:"
-        '
-        'txtChildName
-        '
-        Me.txtChildName.Location = New System.Drawing.Point(150, 28)
-        Me.txtChildName.Name = "txtChildName"
-        Me.txtChildName.Size = New System.Drawing.Size(370, 23)
-        Me.txtChildName.TabIndex = 0
-        '
-        'lblOffense
-        '
-        Me.lblOffense.AutoSize = True
-        Me.lblOffense.Location = New System.Drawing.Point(12, 61)
-        Me.lblOffense.Name = "lblOffense"
-        Me.lblOffense.Text = "Offense:"
-        '
-        'txtOffense
-        '
-        Me.txtOffense.Location = New System.Drawing.Point(150, 58)
-        Me.txtOffense.Name = "txtOffense"
-        Me.txtOffense.Size = New System.Drawing.Size(370, 23)
-        Me.txtOffense.TabIndex = 1
-        '
-        'lblCaseNo
-        '
-        Me.lblCaseNo.AutoSize = True
-        Me.lblCaseNo.Location = New System.Drawing.Point(12, 91)
-        Me.lblCaseNo.Name = "lblCaseNo"
-        Me.lblCaseNo.Text = "Case No.:"
-        '
-        'txtCaseNo
-        '
-        Me.txtCaseNo.Location = New System.Drawing.Point(150, 88)
-        Me.txtCaseNo.MaxLength = 30
-        Me.txtCaseNo.Name = "txtCaseNo"
-        Me.txtCaseNo.Size = New System.Drawing.Size(150, 23)
-        Me.txtCaseNo.TabIndex = 2
-        '
-        'lblChildId
-        '
-        Me.lblChildId.AutoSize = True
-        Me.lblChildId.Location = New System.Drawing.Point(316, 91)
-        Me.lblChildId.Name = "lblChildId"
-        Me.lblChildId.Text = "Child ID:"
-        '
-        'txtChildId
-        '
-        Me.txtChildId.BackColor = System.Drawing.SystemColors.Control
-        Me.txtChildId.Location = New System.Drawing.Point(380, 88)
-        Me.txtChildId.Name = "txtChildId"
-        Me.txtChildId.ReadOnly = True
-        Me.txtChildId.Size = New System.Drawing.Size(140, 23)
-        Me.txtChildId.TabStop = False
-        '
-        'lblStatus
-        '
-        Me.lblStatus.AutoSize = True
-        Me.lblStatus.Location = New System.Drawing.Point(12, 121)
-        Me.lblStatus.Name = "lblStatus"
-        Me.lblStatus.Text = "Status:"
-        '
-        'txtStatus
-        '
-        Me.txtStatus.Location = New System.Drawing.Point(150, 118)
-        Me.txtStatus.Name = "txtStatus"
-        Me.txtStatus.Size = New System.Drawing.Size(370, 23)
-        Me.txtStatus.TabIndex = 3
-        '
-        'lblPrePact
-        '
-        Me.lblPrePact.AutoSize = True
-        Me.lblPrePact.Location = New System.Drawing.Point(12, 156)
-        Me.lblPrePact.Name = "lblPrePact"
-        Me.lblPrePact.Text = "Pre-PACT Date:"
-        '
-        'dtpPrePact
-        '
-        Me.dtpPrePact.Format = System.Windows.Forms.DateTimePickerFormat.Short
-        Me.dtpPrePact.Location = New System.Drawing.Point(150, 152)
-        Me.dtpPrePact.Name = "dtpPrePact"
-        Me.dtpPrePact.Size = New System.Drawing.Size(130, 23)
-        Me.dtpPrePact.TabIndex = 4
-        '
-        'lblDob
-        '
-        Me.lblDob.AutoSize = True
-        Me.lblDob.Location = New System.Drawing.Point(12, 186)
-        Me.lblDob.Name = "lblDob"
-        Me.lblDob.Text = "Date of Birth:"
-        '
-        'dtpDob
-        '
-        Me.dtpDob.Format = System.Windows.Forms.DateTimePickerFormat.Short
-        Me.dtpDob.Location = New System.Drawing.Point(150, 182)
-        Me.dtpDob.Name = "dtpDob"
-        Me.dtpDob.Size = New System.Drawing.Size(130, 23)
-        Me.dtpDob.TabIndex = 5
-        '
-        'lblInitial
-        '
-        Me.lblInitial.AutoSize = True
-        Me.lblInitial.Location = New System.Drawing.Point(12, 216)
-        Me.lblInitial.Name = "lblInitial"
-        Me.lblInitial.Text = "Initial Submit Date:"
-        '
-        'dtpInitialSubmit
-        '
-        Me.dtpInitialSubmit.Format = System.Windows.Forms.DateTimePickerFormat.Short
-        Me.dtpInitialSubmit.Location = New System.Drawing.Point(150, 212)
-        Me.dtpInitialSubmit.Name = "dtpInitialSubmit"
-        Me.dtpInitialSubmit.Size = New System.Drawing.Size(130, 23)
-        Me.dtpInitialSubmit.TabIndex = 6
-        '
-        'lblLastStatus
-        '
-        Me.lblLastStatus.AutoSize = True
-        Me.lblLastStatus.Location = New System.Drawing.Point(12, 246)
-        Me.lblLastStatus.Name = "lblLastStatus"
-        Me.lblLastStatus.Text = "Last Case Status:"
-        '
-        'dtpLastStatus
-        '
-        Me.dtpLastStatus.Format = System.Windows.Forms.DateTimePickerFormat.Short
-        Me.dtpLastStatus.Location = New System.Drawing.Point(150, 242)
-        Me.dtpLastStatus.Name = "dtpLastStatus"
-        Me.dtpLastStatus.Size = New System.Drawing.Size(130, 23)
-        Me.dtpLastStatus.TabIndex = 7
-        '
-        'chkIntake
-        '
-        Me.chkIntake.AutoSize = True
-        Me.chkIntake.Location = New System.Drawing.Point(150, 275)
-        Me.chkIntake.Name = "chkIntake"
-        Me.chkIntake.TabIndex = 8
-        Me.chkIntake.Text = "Intake Completed"
-        Me.chkIntake.UseVisualStyleBackColor = True
-        '
-        'grpResults
-        '
-        Me.grpResults.Controls.Add(Me.lblPrePactCap)
-        Me.grpResults.Controls.Add(Me.lblPrePactDays)
-        Me.grpResults.Controls.Add(Me.lblAgeCap)
-        Me.grpResults.Controls.Add(Me.lblAge)
-        Me.grpResults.Controls.Add(Me.lblPendingCap)
-        Me.grpResults.Controls.Add(Me.lblPending)
-        Me.grpResults.Controls.Add(Me.lblThresholdCap)
-        Me.grpResults.Controls.Add(Me.lblThreshold)
-        Me.grpResults.Controls.Add(Me.lblStaffingCap)
-        Me.grpResults.Controls.Add(Me.lblStaffing)
-        Me.grpResults.Location = New System.Drawing.Point(564, 12)
-        Me.grpResults.Name = "grpResults"
-        Me.grpResults.Size = New System.Drawing.Size(314, 305)
-        Me.grpResults.TabIndex = 1
-        Me.grpResults.TabStop = False
-        Me.grpResults.Text = "Results"
-        '
-        'lblPrePactCap
-        '
-        Me.lblPrePactCap.AutoSize = True
-        Me.lblPrePactCap.Location = New System.Drawing.Point(14, 28)
-        Me.lblPrePactCap.Name = "lblPrePactCap"
-        Me.lblPrePactCap.Text = "Pre-PACT Countdown:"
-        '
-        'lblPrePactDays
-        '
-        Me.lblPrePactDays.AutoSize = True
-        Me.lblPrePactDays.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Bold)
-        Me.lblPrePactDays.Location = New System.Drawing.Point(14, 48)
-        Me.lblPrePactDays.Name = "lblPrePactDays"
-        Me.lblPrePactDays.Text = "-"
-        '
-        'lblAgeCap
-        '
-        Me.lblAgeCap.AutoSize = True
-        Me.lblAgeCap.Location = New System.Drawing.Point(14, 82)
-        Me.lblAgeCap.Name = "lblAgeCap"
-        Me.lblAgeCap.Text = "Current Age:"
-        '
-        'lblAge
-        '
-        Me.lblAge.AutoSize = True
-        Me.lblAge.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Bold)
-        Me.lblAge.Location = New System.Drawing.Point(14, 102)
-        Me.lblAge.Name = "lblAge"
-        Me.lblAge.Text = "-"
-        '
-        'lblPendingCap
-        '
-        Me.lblPendingCap.AutoSize = True
-        Me.lblPendingCap.Location = New System.Drawing.Point(14, 136)
-        Me.lblPendingCap.Name = "lblPendingCap"
-        Me.lblPendingCap.Text = "Days Pending:"
-        '
-        'lblPending
-        '
-        Me.lblPending.AutoSize = True
-        Me.lblPending.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Bold)
-        Me.lblPending.Location = New System.Drawing.Point(14, 156)
-        Me.lblPending.Name = "lblPending"
-        Me.lblPending.Text = "-"
-        '
-        'lblThresholdCap
-        '
-        Me.lblThresholdCap.AutoSize = True
-        Me.lblThresholdCap.Location = New System.Drawing.Point(14, 190)
-        Me.lblThresholdCap.Name = "lblThresholdCap"
-        Me.lblThresholdCap.Text = "Threshold Date (Last Status + 60):"
-        '
-        'lblThreshold
-        '
-        Me.lblThreshold.AutoSize = True
-        Me.lblThreshold.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Bold)
-        Me.lblThreshold.Location = New System.Drawing.Point(14, 210)
-        Me.lblThreshold.Name = "lblThreshold"
-        Me.lblThreshold.Text = "-"
-        '
-        'lblStaffingCap
-        '
-        Me.lblStaffingCap.AutoSize = True
-        Me.lblStaffingCap.Location = New System.Drawing.Point(14, 244)
-        Me.lblStaffingCap.Name = "lblStaffingCap"
-        Me.lblStaffingCap.Text = "Countdown to Next Staffing:"
-        '
-        'lblStaffing
-        '
-        Me.lblStaffing.AutoSize = True
-        Me.lblStaffing.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Bold)
-        Me.lblStaffing.Location = New System.Drawing.Point(14, 264)
-        Me.lblStaffing.Name = "lblStaffing"
-        Me.lblStaffing.Text = "-"
-        '
-        'grpNotes
-        '
-        Me.grpNotes.Controls.Add(Me.txtNotes)
-        Me.grpNotes.Location = New System.Drawing.Point(12, 324)
-        Me.grpNotes.Name = "grpNotes"
-        Me.grpNotes.Size = New System.Drawing.Size(866, 112)
-        Me.grpNotes.TabIndex = 2
-        Me.grpNotes.TabStop = False
-        Me.grpNotes.Text = "Progress Notes"
-        '
-        'txtNotes
-        '
-        Me.txtNotes.AcceptsReturn = True
-        Me.txtNotes.Location = New System.Drawing.Point(10, 22)
-        Me.txtNotes.Multiline = True
-        Me.txtNotes.Name = "txtNotes"
-        Me.txtNotes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtNotes.Size = New System.Drawing.Size(846, 78)
-        Me.txtNotes.TabIndex = 9
-        '
-        'grpRecords
-        '
-        Me.grpRecords.Controls.Add(Me.lvRecords)
-        Me.grpRecords.Location = New System.Drawing.Point(12, 444)
-        Me.grpRecords.Name = "grpRecords"
-        Me.grpRecords.Size = New System.Drawing.Size(866, 210)
-        Me.grpRecords.TabIndex = 3
-        Me.grpRecords.TabStop = False
-        Me.grpRecords.Text = "Records"
-        '
-        'lvRecords
-        '
-        Me.lvRecords.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colChildId, Me.colCaseNo, Me.colChild, Me.colOffense, Me.colStatus, Me.colPrePact, Me.colThreshold, Me.colIntake})
-        Me.lvRecords.FullRowSelect = True
-        Me.lvRecords.GridLines = True
-        Me.lvRecords.HideSelection = False
-        Me.lvRecords.Location = New System.Drawing.Point(10, 22)
-        Me.lvRecords.MultiSelect = False
-        Me.lvRecords.Name = "lvRecords"
-        Me.lvRecords.Size = New System.Drawing.Size(846, 178)
-        Me.lvRecords.TabIndex = 10
-        Me.lvRecords.UseCompatibleStateImageBehavior = False
-        Me.lvRecords.View = System.Windows.Forms.View.Details
-        '
-        'colChildId
-        '
-        Me.colChildId.Text = "Child ID"
-        Me.colChildId.Width = 80
-        '
-        'colCaseNo
-        '
-        Me.colCaseNo.Text = "Case No."
-        Me.colCaseNo.Width = 100
-        '
-        'colChild
-        '
-        Me.colChild.Text = "Child Name"
-        Me.colChild.Width = 150
-        '
-        'colOffense
-        '
-        Me.colOffense.Text = "Offense"
-        Me.colOffense.Width = 140
-        '
-        'colStatus
-        '
-        Me.colStatus.Text = "Status"
-        Me.colStatus.Width = 120
-        '
-        'colPrePact
-        '
-        Me.colPrePact.Text = "Pre-PACT Date"
-        Me.colPrePact.Width = 85
-        '
-        'colThreshold
-        '
-        Me.colThreshold.Text = "Threshold"
-        Me.colThreshold.Width = 85
-        '
-        'colIntake
-        '
-        Me.colIntake.Text = "Intake"
-        Me.colIntake.Width = 50
-        '
-        'btnCalculate
-        '
-        Me.btnCalculate.Location = New System.Drawing.Point(12, 664)
-        Me.btnCalculate.Name = "btnCalculate"
-        Me.btnCalculate.Size = New System.Drawing.Size(100, 34)
-        Me.btnCalculate.TabIndex = 11
-        Me.btnCalculate.Text = "Calculate"
-        Me.btnCalculate.UseVisualStyleBackColor = True
-        '
-        'btnSave
-        '
-        Me.btnSave.Location = New System.Drawing.Point(122, 664)
-        Me.btnSave.Name = "btnSave"
-        Me.btnSave.Size = New System.Drawing.Size(100, 34)
-        Me.btnSave.TabIndex = 12
-        Me.btnSave.Text = "Save"
-        Me.btnSave.UseVisualStyleBackColor = True
-        '
-        'btnClear
-        '
-        Me.btnClear.Location = New System.Drawing.Point(232, 664)
-        Me.btnClear.Name = "btnClear"
-        Me.btnClear.Size = New System.Drawing.Size(100, 34)
-        Me.btnClear.TabIndex = 13
-        Me.btnClear.Text = "Clear"
-        Me.btnClear.UseVisualStyleBackColor = True
-        '
-        'btnDelete
-        '
-        Me.btnDelete.Location = New System.Drawing.Point(342, 664)
-        Me.btnDelete.Name = "btnDelete"
-        Me.btnDelete.Size = New System.Drawing.Size(100, 34)
-        Me.btnDelete.TabIndex = 14
-        Me.btnDelete.Text = "Delete"
-        Me.btnDelete.UseVisualStyleBackColor = True
-        '
-        'mainForm
-        '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 15.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(890, 710)
-        Me.Controls.Add(Me.btnDelete)
-        Me.Controls.Add(Me.btnClear)
-        Me.Controls.Add(Me.btnSave)
-        Me.Controls.Add(Me.btnCalculate)
-        Me.Controls.Add(Me.grpRecords)
-        Me.Controls.Add(Me.grpNotes)
-        Me.Controls.Add(Me.grpResults)
-        Me.Controls.Add(Me.grpCase)
-        Me.Font = New System.Drawing.Font("Segoe UI", 9.0!)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.MaximizeBox = False
-        Me.Name = "mainForm"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Pre-PACT Case Tracker"
-        Me.grpCase.ResumeLayout(False)
-        Me.grpCase.PerformLayout()
-        Me.grpResults.ResumeLayout(False)
-        Me.grpResults.PerformLayout()
-        Me.grpNotes.ResumeLayout(False)
-        Me.grpNotes.PerformLayout()
-        Me.grpRecords.ResumeLayout(False)
-        Me.ResumeLayout(False)
+        grpCase = New System.Windows.Forms.GroupBox()
+        lblChild = New System.Windows.Forms.Label()
+        txtChildName = New System.Windows.Forms.TextBox()
+        lblOffense = New System.Windows.Forms.Label()
+        txtOffense = New System.Windows.Forms.TextBox()
+        lblCaseNo = New System.Windows.Forms.Label()
+        txtCaseNo = New System.Windows.Forms.TextBox()
+        lblChildId = New System.Windows.Forms.Label()
+        txtChildId = New System.Windows.Forms.TextBox()
+        lblStatus = New System.Windows.Forms.Label()
+        txtStatus = New System.Windows.Forms.TextBox()
+        lblPrePact = New System.Windows.Forms.Label()
+        dtpPrePact = New System.Windows.Forms.DateTimePicker()
+        lblDob = New System.Windows.Forms.Label()
+        dtpDob = New System.Windows.Forms.DateTimePicker()
+        lblInitial = New System.Windows.Forms.Label()
+        dtpInitialSubmit = New System.Windows.Forms.DateTimePicker()
+        lblLastStatus = New System.Windows.Forms.Label()
+        dtpLastStatus = New System.Windows.Forms.DateTimePicker()
+        chkIntake = New System.Windows.Forms.CheckBox()
+        grpResults = New System.Windows.Forms.GroupBox()
+        lblPrePactCap = New System.Windows.Forms.Label()
+        lblPrePactDays = New System.Windows.Forms.Label()
+        lblAgeCap = New System.Windows.Forms.Label()
+        lblAge = New System.Windows.Forms.Label()
+        lblPendingCap = New System.Windows.Forms.Label()
+        lblPending = New System.Windows.Forms.Label()
+        lblThresholdCap = New System.Windows.Forms.Label()
+        lblThreshold = New System.Windows.Forms.Label()
+        lblStaffingCap = New System.Windows.Forms.Label()
+        lblStaffing = New System.Windows.Forms.Label()
+        grpNotes = New System.Windows.Forms.GroupBox()
+        txtNotes = New System.Windows.Forms.TextBox()
+        grpRecords = New System.Windows.Forms.GroupBox()
+        lvRecords = New System.Windows.Forms.ListView()
+        colChildId = New System.Windows.Forms.ColumnHeader()
+        colCaseNo = New System.Windows.Forms.ColumnHeader()
+        colChild = New System.Windows.Forms.ColumnHeader()
+        colOffense = New System.Windows.Forms.ColumnHeader()
+        colStatus = New System.Windows.Forms.ColumnHeader()
+        colPrePact = New System.Windows.Forms.ColumnHeader()
+        colThreshold = New System.Windows.Forms.ColumnHeader()
+        colIntake = New System.Windows.Forms.ColumnHeader()
+        btnCalculate = New System.Windows.Forms.Button()
+        btnSave = New System.Windows.Forms.Button()
+        btnClear = New System.Windows.Forms.Button()
+        btnDelete = New System.Windows.Forms.Button()
+        btnClose = New System.Windows.Forms.Button()
+        grpCase.SuspendLayout()
+        grpResults.SuspendLayout()
+        grpNotes.SuspendLayout()
+        grpRecords.SuspendLayout()
+        SuspendLayout()
+        ' 
+        ' grpCase
+        ' 
+        grpCase.Controls.Add(lblChild)
+        grpCase.Controls.Add(txtChildName)
+        grpCase.Controls.Add(lblOffense)
+        grpCase.Controls.Add(txtOffense)
+        grpCase.Controls.Add(lblCaseNo)
+        grpCase.Controls.Add(txtCaseNo)
+        grpCase.Controls.Add(lblChildId)
+        grpCase.Controls.Add(txtChildId)
+        grpCase.Controls.Add(lblStatus)
+        grpCase.Controls.Add(txtStatus)
+        grpCase.Controls.Add(lblPrePact)
+        grpCase.Controls.Add(dtpPrePact)
+        grpCase.Controls.Add(lblDob)
+        grpCase.Controls.Add(dtpDob)
+        grpCase.Controls.Add(lblInitial)
+        grpCase.Controls.Add(dtpInitialSubmit)
+        grpCase.Controls.Add(lblLastStatus)
+        grpCase.Controls.Add(dtpLastStatus)
+        grpCase.Controls.Add(chkIntake)
+        grpCase.Location = New System.Drawing.Point(12, 12)
+        grpCase.Name = "grpCase"
+        grpCase.Size = New System.Drawing.Size(540, 305)
+        grpCase.TabIndex = 0
+        grpCase.TabStop = False
+        grpCase.Text = "Case Information"
+        ' 
+        ' lblChild
+        ' 
+        lblChild.AutoSize = True
+        lblChild.Location = New System.Drawing.Point(12, 31)
+        lblChild.Name = "lblChild"
+        lblChild.Size = New System.Drawing.Size(73, 15)
+        lblChild.TabIndex = 0
+        lblChild.Text = "Child Name:"
+        ' 
+        ' txtChildName
+        ' 
+        txtChildName.Location = New System.Drawing.Point(150, 28)
+        txtChildName.Name = "txtChildName"
+        txtChildName.Size = New System.Drawing.Size(370, 23)
+        txtChildName.TabIndex = 0
+        ' 
+        ' lblOffense
+        ' 
+        lblOffense.AutoSize = True
+        lblOffense.Location = New System.Drawing.Point(12, 61)
+        lblOffense.Name = "lblOffense"
+        lblOffense.Size = New System.Drawing.Size(51, 15)
+        lblOffense.TabIndex = 1
+        lblOffense.Text = "Offense:"
+        ' 
+        ' txtOffense
+        ' 
+        txtOffense.Location = New System.Drawing.Point(150, 58)
+        txtOffense.Name = "txtOffense"
+        txtOffense.Size = New System.Drawing.Size(370, 23)
+        txtOffense.TabIndex = 1
+        ' 
+        ' lblCaseNo
+        ' 
+        lblCaseNo.AutoSize = True
+        lblCaseNo.Location = New System.Drawing.Point(12, 91)
+        lblCaseNo.Name = "lblCaseNo"
+        lblCaseNo.Size = New System.Drawing.Size(57, 15)
+        lblCaseNo.TabIndex = 2
+        lblCaseNo.Text = "Case No.:"
+        ' 
+        ' txtCaseNo
+        ' 
+        txtCaseNo.Location = New System.Drawing.Point(150, 88)
+        txtCaseNo.MaxLength = 30
+        txtCaseNo.Name = "txtCaseNo"
+        txtCaseNo.Size = New System.Drawing.Size(150, 23)
+        txtCaseNo.TabIndex = 2
+        ' 
+        ' lblChildId
+        ' 
+        lblChildId.AutoSize = True
+        lblChildId.Location = New System.Drawing.Point(316, 91)
+        lblChildId.Name = "lblChildId"
+        lblChildId.Size = New System.Drawing.Size(52, 15)
+        lblChildId.TabIndex = 3
+        lblChildId.Text = "Child ID:"
+        ' 
+        ' txtChildId
+        ' 
+        txtChildId.BackColor = Drawing.SystemColors.Control
+        txtChildId.Location = New System.Drawing.Point(380, 88)
+        txtChildId.Name = "txtChildId"
+        txtChildId.ReadOnly = True
+        txtChildId.Size = New System.Drawing.Size(140, 23)
+        txtChildId.TabIndex = 4
+        txtChildId.TabStop = False
+        ' 
+        ' lblStatus
+        ' 
+        lblStatus.AutoSize = True
+        lblStatus.Location = New System.Drawing.Point(12, 121)
+        lblStatus.Name = "lblStatus"
+        lblStatus.Size = New System.Drawing.Size(42, 15)
+        lblStatus.TabIndex = 5
+        lblStatus.Text = "Status:"
+        ' 
+        ' txtStatus
+        ' 
+        txtStatus.Location = New System.Drawing.Point(150, 118)
+        txtStatus.Name = "txtStatus"
+        txtStatus.Size = New System.Drawing.Size(370, 23)
+        txtStatus.TabIndex = 3
+        ' 
+        ' lblPrePact
+        ' 
+        lblPrePact.AutoSize = True
+        lblPrePact.Location = New System.Drawing.Point(12, 156)
+        lblPrePact.Name = "lblPrePact"
+        lblPrePact.Size = New System.Drawing.Size(87, 15)
+        lblPrePact.TabIndex = 6
+        lblPrePact.Text = "Pre-PACT Date:"
+        ' 
+        ' dtpPrePact
+        ' 
+        dtpPrePact.Format = System.Windows.Forms.DateTimePickerFormat.Short
+        dtpPrePact.Location = New System.Drawing.Point(150, 152)
+        dtpPrePact.Name = "dtpPrePact"
+        dtpPrePact.Size = New System.Drawing.Size(130, 23)
+        dtpPrePact.TabIndex = 4
+        ' 
+        ' lblDob
+        ' 
+        lblDob.AutoSize = True
+        lblDob.Location = New System.Drawing.Point(12, 186)
+        lblDob.Name = "lblDob"
+        lblDob.Size = New System.Drawing.Size(76, 15)
+        lblDob.TabIndex = 7
+        lblDob.Text = "Date of Birth:"
+        ' 
+        ' dtpDob
+        ' 
+        dtpDob.Format = System.Windows.Forms.DateTimePickerFormat.Short
+        dtpDob.Location = New System.Drawing.Point(150, 182)
+        dtpDob.Name = "dtpDob"
+        dtpDob.Size = New System.Drawing.Size(130, 23)
+        dtpDob.TabIndex = 5
+        ' 
+        ' lblInitial
+        ' 
+        lblInitial.AutoSize = True
+        lblInitial.Location = New System.Drawing.Point(12, 216)
+        lblInitial.Name = "lblInitial"
+        lblInitial.Size = New System.Drawing.Size(107, 15)
+        lblInitial.TabIndex = 8
+        lblInitial.Text = "Initial Submit Date:"
+        ' 
+        ' dtpInitialSubmit
+        ' 
+        dtpInitialSubmit.Format = System.Windows.Forms.DateTimePickerFormat.Short
+        dtpInitialSubmit.Location = New System.Drawing.Point(150, 212)
+        dtpInitialSubmit.Name = "dtpInitialSubmit"
+        dtpInitialSubmit.Size = New System.Drawing.Size(130, 23)
+        dtpInitialSubmit.TabIndex = 6
+        ' 
+        ' lblLastStatus
+        ' 
+        lblLastStatus.AutoSize = True
+        lblLastStatus.Location = New System.Drawing.Point(12, 246)
+        lblLastStatus.Name = "lblLastStatus"
+        lblLastStatus.Size = New System.Drawing.Size(94, 15)
+        lblLastStatus.TabIndex = 9
+        lblLastStatus.Text = "Last Case Status:"
+        ' 
+        ' dtpLastStatus
+        ' 
+        dtpLastStatus.Format = System.Windows.Forms.DateTimePickerFormat.Short
+        dtpLastStatus.Location = New System.Drawing.Point(150, 242)
+        dtpLastStatus.Name = "dtpLastStatus"
+        dtpLastStatus.Size = New System.Drawing.Size(130, 23)
+        dtpLastStatus.TabIndex = 7
+        ' 
+        ' chkIntake
+        ' 
+        chkIntake.AutoSize = True
+        chkIntake.Location = New System.Drawing.Point(150, 275)
+        chkIntake.Name = "chkIntake"
+        chkIntake.Size = New System.Drawing.Size(120, 19)
+        chkIntake.TabIndex = 8
+        chkIntake.Text = "Intake Completed"
+        chkIntake.UseVisualStyleBackColor = True
+        ' 
+        ' grpResults
+        ' 
+        grpResults.Controls.Add(lblPrePactCap)
+        grpResults.Controls.Add(lblPrePactDays)
+        grpResults.Controls.Add(lblAgeCap)
+        grpResults.Controls.Add(lblAge)
+        grpResults.Controls.Add(lblPendingCap)
+        grpResults.Controls.Add(lblPending)
+        grpResults.Controls.Add(lblThresholdCap)
+        grpResults.Controls.Add(lblThreshold)
+        grpResults.Controls.Add(lblStaffingCap)
+        grpResults.Controls.Add(lblStaffing)
+        grpResults.Location = New System.Drawing.Point(564, 12)
+        grpResults.Name = "grpResults"
+        grpResults.Size = New System.Drawing.Size(314, 305)
+        grpResults.TabIndex = 1
+        grpResults.TabStop = False
+        grpResults.Text = "Results"
+        ' 
+        ' lblPrePactCap
+        ' 
+        lblPrePactCap.AutoSize = True
+        lblPrePactCap.Location = New System.Drawing.Point(14, 28)
+        lblPrePactCap.Name = "lblPrePactCap"
+        lblPrePactCap.Size = New System.Drawing.Size(126, 15)
+        lblPrePactCap.TabIndex = 0
+        lblPrePactCap.Text = "Pre-PACT Countdown:"
+        ' 
+        ' lblPrePactDays
+        ' 
+        lblPrePactDays.AutoSize = True
+        lblPrePactDays.Font = New System.Drawing.Font("Segoe UI", 11F, Drawing.FontStyle.Bold)
+        lblPrePactDays.Location = New System.Drawing.Point(14, 48)
+        lblPrePactDays.Name = "lblPrePactDays"
+        lblPrePactDays.Size = New System.Drawing.Size(15, 20)
+        lblPrePactDays.TabIndex = 1
+        lblPrePactDays.Text = "-"
+        ' 
+        ' lblAgeCap
+        ' 
+        lblAgeCap.AutoSize = True
+        lblAgeCap.Location = New System.Drawing.Point(14, 82)
+        lblAgeCap.Name = "lblAgeCap"
+        lblAgeCap.Size = New System.Drawing.Size(74, 15)
+        lblAgeCap.TabIndex = 2
+        lblAgeCap.Text = "Current Age:"
+        ' 
+        ' lblAge
+        ' 
+        lblAge.AutoSize = True
+        lblAge.Font = New System.Drawing.Font("Segoe UI", 11F, Drawing.FontStyle.Bold)
+        lblAge.Location = New System.Drawing.Point(14, 102)
+        lblAge.Name = "lblAge"
+        lblAge.Size = New System.Drawing.Size(15, 20)
+        lblAge.TabIndex = 3
+        lblAge.Text = "-"
+        ' 
+        ' lblPendingCap
+        ' 
+        lblPendingCap.AutoSize = True
+        lblPendingCap.Location = New System.Drawing.Point(14, 136)
+        lblPendingCap.Name = "lblPendingCap"
+        lblPendingCap.Size = New System.Drawing.Size(82, 15)
+        lblPendingCap.TabIndex = 4
+        lblPendingCap.Text = "Days Pending:"
+        ' 
+        ' lblPending
+        ' 
+        lblPending.AutoSize = True
+        lblPending.Font = New System.Drawing.Font("Segoe UI", 11F, Drawing.FontStyle.Bold)
+        lblPending.Location = New System.Drawing.Point(14, 156)
+        lblPending.Name = "lblPending"
+        lblPending.Size = New System.Drawing.Size(15, 20)
+        lblPending.TabIndex = 5
+        lblPending.Text = "-"
+        ' 
+        ' lblThresholdCap
+        ' 
+        lblThresholdCap.AutoSize = True
+        lblThresholdCap.Location = New System.Drawing.Point(14, 190)
+        lblThresholdCap.Name = "lblThresholdCap"
+        lblThresholdCap.Size = New System.Drawing.Size(182, 15)
+        lblThresholdCap.TabIndex = 6
+        lblThresholdCap.Text = "Threshold Date (Last Status + 60):"
+        ' 
+        ' lblThreshold
+        ' 
+        lblThreshold.AutoSize = True
+        lblThreshold.Font = New System.Drawing.Font("Segoe UI", 11F, Drawing.FontStyle.Bold)
+        lblThreshold.Location = New System.Drawing.Point(14, 210)
+        lblThreshold.Name = "lblThreshold"
+        lblThreshold.Size = New System.Drawing.Size(15, 20)
+        lblThreshold.TabIndex = 7
+        lblThreshold.Text = "-"
+        ' 
+        ' lblStaffingCap
+        ' 
+        lblStaffingCap.AutoSize = True
+        lblStaffingCap.Location = New System.Drawing.Point(14, 244)
+        lblStaffingCap.Name = "lblStaffingCap"
+        lblStaffingCap.Size = New System.Drawing.Size(159, 15)
+        lblStaffingCap.TabIndex = 8
+        lblStaffingCap.Text = "Countdown to Next Staffing:"
+        ' 
+        ' lblStaffing
+        ' 
+        lblStaffing.AutoSize = True
+        lblStaffing.Font = New System.Drawing.Font("Segoe UI", 11F, Drawing.FontStyle.Bold)
+        lblStaffing.Location = New System.Drawing.Point(14, 264)
+        lblStaffing.Name = "lblStaffing"
+        lblStaffing.Size = New System.Drawing.Size(15, 20)
+        lblStaffing.TabIndex = 9
+        lblStaffing.Text = "-"
+        ' 
+        ' grpNotes
+        ' 
+        grpNotes.Controls.Add(txtNotes)
+        grpNotes.Location = New System.Drawing.Point(12, 324)
+        grpNotes.Name = "grpNotes"
+        grpNotes.Size = New System.Drawing.Size(866, 112)
+        grpNotes.TabIndex = 2
+        grpNotes.TabStop = False
+        grpNotes.Text = "Progress Notes"
+        ' 
+        ' txtNotes
+        ' 
+        txtNotes.AcceptsReturn = True
+        txtNotes.Location = New System.Drawing.Point(10, 22)
+        txtNotes.Multiline = True
+        txtNotes.Name = "txtNotes"
+        txtNotes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        txtNotes.Size = New System.Drawing.Size(846, 78)
+        txtNotes.TabIndex = 9
+        ' 
+        ' grpRecords
+        ' 
+        grpRecords.Controls.Add(lvRecords)
+        grpRecords.Location = New System.Drawing.Point(12, 444)
+        grpRecords.Name = "grpRecords"
+        grpRecords.Size = New System.Drawing.Size(866, 210)
+        grpRecords.TabIndex = 3
+        grpRecords.TabStop = False
+        grpRecords.Text = "Records"
+        ' 
+        ' lvRecords
+        ' 
+        lvRecords.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {colChildId, colCaseNo, colChild, colOffense, colStatus, colPrePact, colThreshold, colIntake})
+        lvRecords.FullRowSelect = True
+        lvRecords.GridLines = True
+        lvRecords.Location = New System.Drawing.Point(10, 22)
+        lvRecords.MultiSelect = False
+        lvRecords.Name = "lvRecords"
+        lvRecords.Size = New System.Drawing.Size(846, 178)
+        lvRecords.TabIndex = 10
+        lvRecords.UseCompatibleStateImageBehavior = False
+        lvRecords.View = System.Windows.Forms.View.Details
+        ' 
+        ' colChildId
+        ' 
+        colChildId.Text = "Child ID"
+        colChildId.Width = 80
+        ' 
+        ' colCaseNo
+        ' 
+        colCaseNo.Text = "Case No."
+        colCaseNo.Width = 100
+        ' 
+        ' colChild
+        ' 
+        colChild.Text = "Child Name"
+        colChild.Width = 150
+        ' 
+        ' colOffense
+        ' 
+        colOffense.Text = "Offense"
+        colOffense.Width = 140
+        ' 
+        ' colStatus
+        ' 
+        colStatus.Text = "Status"
+        colStatus.Width = 120
+        ' 
+        ' colPrePact
+        ' 
+        colPrePact.Text = "Pre-PACT Date"
+        colPrePact.Width = 85
+        ' 
+        ' colThreshold
+        ' 
+        colThreshold.Text = "Threshold"
+        colThreshold.Width = 85
+        ' 
+        ' colIntake
+        ' 
+        colIntake.Text = "Intake"
+        colIntake.Width = 50
+        ' 
+        ' btnCalculate
+        ' 
+        btnCalculate.Location = New System.Drawing.Point(12, 664)
+        btnCalculate.Name = "btnCalculate"
+        btnCalculate.Size = New System.Drawing.Size(100, 34)
+        btnCalculate.TabIndex = 11
+        btnCalculate.Text = "Calculate"
+        btnCalculate.UseVisualStyleBackColor = True
+        ' 
+        ' btnSave
+        ' 
+        btnSave.Location = New System.Drawing.Point(122, 664)
+        btnSave.Name = "btnSave"
+        btnSave.Size = New System.Drawing.Size(100, 34)
+        btnSave.TabIndex = 12
+        btnSave.Text = "Save"
+        btnSave.UseVisualStyleBackColor = True
+        ' 
+        ' btnClear
+        ' 
+        btnClear.Location = New System.Drawing.Point(232, 664)
+        btnClear.Name = "btnClear"
+        btnClear.Size = New System.Drawing.Size(100, 34)
+        btnClear.TabIndex = 13
+        btnClear.Text = "Clear"
+        btnClear.UseVisualStyleBackColor = True
+        ' 
+        ' btnDelete
+        ' 
+        btnDelete.Location = New System.Drawing.Point(342, 664)
+        btnDelete.Name = "btnDelete"
+        btnDelete.Size = New System.Drawing.Size(100, 34)
+        btnDelete.TabIndex = 14
+        btnDelete.Text = "Delete"
+        btnDelete.UseVisualStyleBackColor = True
+        ' 
+        ' btnClose
+        ' 
+        btnClose.Location = New System.Drawing.Point(452, 664)
+        btnClose.Name = "btnClose"
+        btnClose.Size = New System.Drawing.Size(100, 34)
+        btnClose.TabIndex = 15
+        btnClose.Text = "Close"
+        btnClose.UseVisualStyleBackColor = True
+        ' 
+        ' mainForm
+        ' 
+        AutoScaleDimensions = New System.Drawing.SizeF(7F, 15F)
+        AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        ClientSize = New System.Drawing.Size(890, 710)
+        Controls.Add(btnClose)
+        Controls.Add(btnDelete)
+        Controls.Add(btnClear)
+        Controls.Add(btnSave)
+        Controls.Add(btnCalculate)
+        Controls.Add(grpRecords)
+        Controls.Add(grpNotes)
+        Controls.Add(grpResults)
+        Controls.Add(grpCase)
+        Font = New System.Drawing.Font("Segoe UI", 9F)
+        FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        MaximizeBox = False
+        Name = "mainForm"
+        StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Text = "Pre-PACT Case Tracker"
+        grpCase.ResumeLayout(False)
+        grpCase.PerformLayout()
+        grpResults.ResumeLayout(False)
+        grpResults.PerformLayout()
+        grpNotes.ResumeLayout(False)
+        grpNotes.PerformLayout()
+        grpRecords.ResumeLayout(False)
+        ResumeLayout(False)
     End Sub
 
     Friend WithEvents grpCase As System.Windows.Forms.GroupBox
@@ -530,4 +580,5 @@ Partial Class mainForm
     Friend WithEvents btnSave As System.Windows.Forms.Button
     Friend WithEvents btnClear As System.Windows.Forms.Button
     Friend WithEvents btnDelete As System.Windows.Forms.Button
+    Friend WithEvents btnClose As System.Windows.Forms.Button
 End Class

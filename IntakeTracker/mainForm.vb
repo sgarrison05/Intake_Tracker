@@ -12,7 +12,7 @@ Public Class mainForm
     Private Const DateFmt As String = "yyyy-MM-dd"
     Private Const IdPrefix As String = "JV-"
 
-    Private Const DATA_FOLDER As String = "C:\Intake"
+    Private Const DATA_FOLDER As String = "D:\Temp\Intake"
     Private Const DATA_FILE As String = DATA_FOLDER & "\IntakeCases.txt"
 
     Private ReadOnly rng As New Random()
@@ -56,6 +56,10 @@ Public Class mainForm
 
     Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
         DeleteCurrent()
+    End Sub
+
+    Private Sub btnClose_Click(sender As Object, e As EventArgs) Handles btnClose.Click
+        Close()
     End Sub
 
     Private Sub lvRecords_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lvRecords.SelectedIndexChanged
