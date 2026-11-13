@@ -8,12 +8,27 @@ Imports System.Drawing
 Public Class mainForm
 
     Private Const StatusWindowDays As Integer = 60
+    Private Const PrePactWindowDays As Integer = 180
     Private Const FieldCount As Integer = 11
     Private Const DateFmt As String = "yyyy-MM-dd"
     Private Const IdPrefix As String = "JV-"
 
     Private Const DATA_FOLDER As String = "D:\Temp\Intake"
     Private Const DATA_FILE As String = DATA_FOLDER & "\IntakeCases.txt"
+
+    ' Data file layout: tab-separated, header row first, dotted line after the header
+    ' and between records. Columns are padded so every record lines up under the header.
+    Private Const HeaderFirstField As String = "Child ID"
+    Private Const PadColumns As Integer = FieldCount - 1   ' every column except Progress Notes
+    Private Const TabSize As Integer = 8
+    Private Const SeparatorChar As Char = "-"c
+    Private Const SeparatorExtra As Integer = 30           ' dotted line runs this far under the notes column
+
+    Private ReadOnly FileHeaders() As String = {
+        "Child ID", "Case No.", "Child Name", "Offense", "Case Status",
+        "Pre-PACT Date", "Date of Birth", "Initial Submit Date", "Last Case Status",
+        "Intake Completed", "Progress Notes"
+    }
 
     Private ReadOnly rng As New Random()
 
@@ -34,12 +49,17 @@ Public Class mainForm
     Private records As New List(Of CaseRecord)
     Private loadingSelection As Boolean = False
 
+    ' Child ID of the record currently on the form. Empty = new, unsaved child.
+    ' Never displayed; it is generated at first Save and stored in the data file only.
+    Private currentChildId As String = ""
+
 #Region "Form events"
 
     Private Sub mainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadRecords()
         RefreshList()
         ClearForm()
+        Calculate()
     End Sub
 
     Private Sub btnCalculate_Click(sender As Object, e As EventArgs) Handles btnCalculate.Click
@@ -64,7 +84,7 @@ Public Class mainForm
 
     Private Sub lvRecords_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lvRecords.SelectedIndexChanged
         If loadingSelection OrElse lvRecords.SelectedItems.Count = 0 Then Return
-        Dim childId As String = lvRecords.SelectedItems(0).Text
+        Dim childId As String = CStr(lvRecords.SelectedItems(0).Tag)
         Dim rec = records.FirstOrDefault(Function(r) r.ChildId = childId)
         If rec IsNot Nothing Then PopulateForm(rec)
     End Sub
@@ -90,9 +110,10 @@ Public Class mainForm
     Private Sub Calculate()
         Dim today As Date = Date.Today
 
-        ' Pre-PACT countdown
-        Dim prePactDays As Integer = (dtpPrePact.Value.Date - today).Days
-        lblPrePactDays.Text = CountdownText(prePactDays)
+        ' Pre-PACT countdown: starts at 180 days on the Pre-PACT date and counts down
+        Dim prePactDeadline As Date = dtpPrePact.Value.Date.AddDays(PrePactWindowDays)
+        Dim prePactDays As Integer = Math.Min((prePactDeadline - today).Days, PrePactWindowDays)
+        lblPrePactDays.Text = PrePactCountdownText(prePactDays)
         lblPrePactDays.ForeColor = If(prePactDays < 0, Color.Firebrick, SystemColors.ControlText)
 
         ' Current age in years
@@ -113,6 +134,13 @@ Public Class mainForm
         lblStaffing.Text = CountdownText(staffingDays)
         lblStaffing.ForeColor = If(staffingDays < 0, Color.Firebrick, SystemColors.ControlText)
     End Sub
+
+    ' Pre-PACT countdown text: never shows "Today"; zero is "0 days".
+    Private Function PrePactCountdownText(days As Integer) As String
+        If days >= 0 Then Return days.ToString() & If(days = 1, " day", " days")
+        Dim past As Integer = Math.Abs(days)
+        Return past.ToString() & If(past = 1, " day past", " days past")
+    End Function
 
     Private Function CountdownText(days As Integer) As String
         If days = 0 Then Return "Today"
@@ -140,12 +168,15 @@ Public Class mainForm
             Return
         End If
 
-        If txtChildId.Text.Trim().Length = 0 Then txtChildId.Text = GenerateChildId()
-
         Calculate()
 
+        ' Keep a copy so a failed write leaves the in-memory list unchanged
+        Dim backup As New List(Of CaseRecord)(records)
+        Dim isNew As Boolean = String.IsNullOrEmpty(currentChildId)
+        If isNew Then currentChildId = GenerateChildId()
+
         Dim rec As New CaseRecord With {
-            .ChildId = txtChildId.Text,
+            .ChildId = currentChildId,
             .CaseNo = txtCaseNo.Text.Trim(),
             .ChildName = txtChildName.Text.Trim(),
             .Offense = txtOffense.Text.Trim(),
@@ -165,17 +196,26 @@ Public Class mainForm
             records.Add(rec)
         End If
 
-        If Not WriteRecords() Then Return
+        If Not WriteRecords() Then
+            records = backup
+            If isNew Then currentChildId = ""
+            Return
+        End If
+
         RefreshList()
         SelectInList(rec.ChildId)
         MessageBox.Show("Record saved.", "Saved", MessageBoxButtons.OK, MessageBoxIcon.Information)
     End Sub
 
     Private Sub DeleteCurrent()
-        Dim childId As String = txtChildId.Text
-        If lvRecords.SelectedItems.Count > 0 Then childId = lvRecords.SelectedItems(0).Text
+        Dim childId As String = currentChildId
+        If lvRecords.SelectedItems.Count > 0 Then childId = CStr(lvRecords.SelectedItems(0).Tag)
 
-        Dim idx As Integer = records.FindIndex(Function(r) r.ChildId = childId)
+        Dim idx As Integer = -1
+        If Not String.IsNullOrEmpty(childId) Then
+            idx = records.FindIndex(Function(r) r.ChildId = childId)
+        End If
+
         If idx < 0 Then
             MessageBox.Show("Select a saved record to delete.", "Nothing to Delete",
                             MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -183,12 +223,16 @@ Public Class mainForm
         End If
 
         Dim answer = MessageBox.Show("Delete the record for " & records(idx).ChildName &
-                                     " (" & childId & ")?", "Confirm Delete",
+                                     " (Case No. " & records(idx).CaseNo & ")?", "Confirm Delete",
                                      MessageBoxButtons.YesNo, MessageBoxIcon.Question)
         If answer <> DialogResult.Yes Then Return
 
+        Dim backup As New List(Of CaseRecord)(records)
         records.RemoveAt(idx)
-        If Not WriteRecords() Then Return
+        If Not WriteRecords() Then
+            records = backup
+            Return
+        End If
         RefreshList()
         ClearForm()
     End Sub
@@ -198,7 +242,7 @@ Public Class mainForm
         lvRecords.SelectedItems.Clear()
         loadingSelection = False
 
-        txtChildId.Text = GenerateChildId()
+        currentChildId = ""
         txtChildName.Clear()
         txtOffense.Clear()
         txtCaseNo.Clear()
@@ -218,7 +262,7 @@ Public Class mainForm
     End Sub
 
     Private Sub PopulateForm(rec As CaseRecord)
-        txtChildId.Text = rec.ChildId
+        currentChildId = rec.ChildId
         txtCaseNo.Text = rec.CaseNo
         txtChildName.Text = rec.ChildName
         txtOffense.Text = rec.Offense
@@ -242,6 +286,7 @@ Public Class mainForm
         lvRecords.Items.Clear()
         For Each r In records.OrderBy(Function(x) x.ChildName)
             Dim item As New ListViewItem(r.ChildId)
+            item.Tag = r.ChildId
             item.SubItems.Add(r.CaseNo)
             item.SubItems.Add(r.ChildName)
             item.SubItems.Add(r.Offense)
@@ -258,7 +303,7 @@ Public Class mainForm
     Private Sub SelectInList(childId As String)
         loadingSelection = True
         For Each item As ListViewItem In lvRecords.Items
-            If item.Text = childId Then
+            If CStr(item.Tag) = childId Then
                 item.Selected = True
                 item.EnsureVisible()
                 Exit For
@@ -281,8 +326,19 @@ Public Class mainForm
                     Dim line As String = sr.ReadLine()
                     If String.IsNullOrWhiteSpace(line) Then Continue Do
 
-                    Dim f() As String = line.Split("|"c)
-                    If f.Length < FieldCount Then Continue Do
+                    ' Dotted separator lines are ignored
+                    If IsSeparatorLine(line) Then Continue Do
+
+                    Dim f() As String = SplitLine(line)
+                    If f Is Nothing Then Continue Do
+
+                    ' Remove the alignment padding (every column except Progress Notes)
+                    For i As Integer = 0 To PadColumns - 1
+                        f(i) = f(i).TrimEnd(" "c)
+                    Next
+
+                    ' Header row is ignored
+                    If f(0).Trim().Equals(HeaderFirstField, StringComparison.OrdinalIgnoreCase) Then Continue Do
 
                     Dim rec As New CaseRecord
                     rec.ChildId = Unescape(f(0))
@@ -300,36 +356,90 @@ Public Class mainForm
                 Loop
             End Using
         Catch ex As Exception
-            MessageBox.Show("Could not read the data file: " & ex.Message, "File Error",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Could not read the data file:" & vbCrLf & DATA_FILE & vbCrLf & vbCrLf & ex.Message,
+                            "File Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
+    Private Function IsSeparatorLine(line As String) As Boolean
+        Dim t As String = line.Trim()
+        Return t.Length > 0 AndAlso t.All(Function(ch) ch = SeparatorChar)
+    End Function
+
+    ' Splits a data line into fields. Tab-separated is the current format;
+    ' lines in the old "|"-separated format are still readable and are
+    ' converted to the current layout the next time the file is saved.
+    Private Function SplitLine(line As String) As String()
+        Dim f() As String = line.Split(ControlChars.Tab)
+        If f.Length >= FieldCount Then Return f
+
+        f = line.Split("|"c)
+        If f.Length >= FieldCount Then Return f
+
+        Return Nothing
+    End Function
+
     Private Function WriteRecords() As Boolean
         Try
+            ' Create the directory and the data file on first save if they don't exist
+            If Not Directory.Exists(DATA_FOLDER) Then Directory.CreateDirectory(DATA_FOLDER)
+            If Not File.Exists(DATA_FILE) Then File.Create(DATA_FILE).Dispose()
+
+            ' Build every row first so the column widths can be measured
+            Dim rows As New List(Of String())
+            For Each r In records
+                rows.Add(New String() {
+                    Escape(r.ChildId),
+                    Escape(r.CaseNo),
+                    Escape(r.ChildName),
+                    Escape(r.Offense),
+                    Escape(r.Status),
+                    r.PrePact.ToString(DateFmt),
+                    r.Dob.ToString(DateFmt),
+                    r.InitialSubmit.ToString(DateFmt),
+                    r.LastStatus.ToString(DateFmt),
+                    If(r.IntakeCompleted, "Yes", "No"),
+                    Escape(r.Notes)
+                })
+            Next
+
+            ' Each column is as wide as its longest entry (header included),
+            ' rounded up to a tab stop so the columns line up on every line.
+            Dim cellWidth(PadColumns - 1) As Integer
+            For i As Integer = 0 To PadColumns - 1
+                Dim maxLen As Integer = FileHeaders(i).Length
+                For Each row In rows
+                    If row(i).Length > maxLen Then maxLen = row(i).Length
+                Next
+                cellWidth(i) = (maxLen \ TabSize + 1) * TabSize
+            Next
+
+            Dim separator As String = New String(SeparatorChar, cellWidth.Sum() + SeparatorExtra)
+
             Using sw As New StreamWriter(DATA_FILE, False, Encoding.UTF8)
-                For Each r In records
-                    sw.WriteLine(String.Join("|", {
-                        Escape(r.ChildId),
-                        Escape(r.CaseNo),
-                        Escape(r.ChildName),
-                        Escape(r.Offense),
-                        Escape(r.Status),
-                        r.PrePact.ToString(DateFmt),
-                        r.Dob.ToString(DateFmt),
-                        r.InitialSubmit.ToString(DateFmt),
-                        r.LastStatus.ToString(DateFmt),
-                        If(r.IntakeCompleted, "1", "0"),
-                        Escape(r.Notes)
-                    }))
+                sw.WriteLine(FormatRow(FileHeaders, cellWidth))
+                For Each row In rows
+                    sw.WriteLine(separator)
+                    sw.WriteLine(FormatRow(row, cellWidth))
                 Next
             End Using
             Return True
         Catch ex As Exception
-            MessageBox.Show("Could not write the data file: " & ex.Message, "File Error",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Could not write the data file:" & vbCrLf & DATA_FILE & vbCrLf & vbCrLf & ex.Message,
+                            "File Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Return False
         End Try
+    End Function
+
+    ' Pads each column to its width, ends it with a tab, and appends Progress Notes unpadded.
+    Private Function FormatRow(cells() As String, cellWidth() As Integer) As String
+        Dim sb As New StringBuilder()
+        For i As Integer = 0 To PadColumns - 1
+            sb.Append(cells(i).PadRight(cellWidth(i) - 1))
+            sb.Append(ControlChars.Tab)
+        Next
+        sb.Append(cells(PadColumns))
+        Return sb.ToString()
     End Function
 
     Private Function TryParseDate(text As String, ByRef result As Date) As Boolean
@@ -337,9 +447,10 @@ Public Class mainForm
                                   Globalization.DateTimeStyles.None, result)
     End Function
 
+    ' Tabs and line breaks inside a field are escaped so they can't break the file layout.
     Private Function Escape(s As String) As String
         If s Is Nothing Then Return ""
-        Return s.Replace("\", "\\").Replace("|", "\p") _
+        Return s.Replace("\", "\\").Replace(vbTab, "\t") _
                 .Replace(vbCrLf, "\n").Replace(vbCr, "\n").Replace(vbLf, "\n")
     End Function
 
@@ -352,7 +463,8 @@ Public Class mainForm
                 i += 1
                 Select Case s(i)
                     Case "n"c : sb.Append(vbCrLf)
-                    Case "p"c : sb.Append("|"c)
+                    Case "t"c : sb.Append(vbTab)
+                    Case "p"c : sb.Append("|"c)   ' old pipe-format files
                     Case "\"c : sb.Append("\"c)
                     Case Else : sb.Append(s(i))
                 End Select
@@ -363,6 +475,8 @@ Public Class mainForm
         Loop
         Return sb.ToString()
     End Function
+
+
 
 #End Region
 

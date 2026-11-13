@@ -18,14 +18,14 @@ Partial Class mainForm
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         grpCase = New System.Windows.Forms.GroupBox()
+        lblLEA = New System.Windows.Forms.Label()
+        txbLEAgency = New System.Windows.Forms.TextBox()
         lblChild = New System.Windows.Forms.Label()
         txtChildName = New System.Windows.Forms.TextBox()
         lblOffense = New System.Windows.Forms.Label()
         txtOffense = New System.Windows.Forms.TextBox()
         lblCaseNo = New System.Windows.Forms.Label()
         txtCaseNo = New System.Windows.Forms.TextBox()
-        lblChildId = New System.Windows.Forms.Label()
-        txtChildId = New System.Windows.Forms.TextBox()
         lblStatus = New System.Windows.Forms.Label()
         txtStatus = New System.Windows.Forms.TextBox()
         lblPrePact = New System.Windows.Forms.Label()
@@ -52,9 +52,9 @@ Partial Class mainForm
         txtNotes = New System.Windows.Forms.TextBox()
         grpRecords = New System.Windows.Forms.GroupBox()
         lvRecords = New System.Windows.Forms.ListView()
-        colChildId = New System.Windows.Forms.ColumnHeader()
-        colCaseNo = New System.Windows.Forms.ColumnHeader()
         colChild = New System.Windows.Forms.ColumnHeader()
+        colLEA = New System.Windows.Forms.ColumnHeader()
+        colCaseNo = New System.Windows.Forms.ColumnHeader()
         colOffense = New System.Windows.Forms.ColumnHeader()
         colStatus = New System.Windows.Forms.ColumnHeader()
         colPrePact = New System.Windows.Forms.ColumnHeader()
@@ -73,14 +73,14 @@ Partial Class mainForm
         ' 
         ' grpCase
         ' 
+        grpCase.Controls.Add(lblLEA)
+        grpCase.Controls.Add(txbLEAgency)
         grpCase.Controls.Add(lblChild)
         grpCase.Controls.Add(txtChildName)
         grpCase.Controls.Add(lblOffense)
         grpCase.Controls.Add(txtOffense)
         grpCase.Controls.Add(lblCaseNo)
         grpCase.Controls.Add(txtCaseNo)
-        grpCase.Controls.Add(lblChildId)
-        grpCase.Controls.Add(txtChildId)
         grpCase.Controls.Add(lblStatus)
         grpCase.Controls.Add(txtStatus)
         grpCase.Controls.Add(lblPrePact)
@@ -94,10 +94,26 @@ Partial Class mainForm
         grpCase.Controls.Add(chkIntake)
         grpCase.Location = New System.Drawing.Point(12, 12)
         grpCase.Name = "grpCase"
-        grpCase.Size = New System.Drawing.Size(540, 305)
+        grpCase.Size = New System.Drawing.Size(494, 305)
         grpCase.TabIndex = 0
         grpCase.TabStop = False
         grpCase.Text = "Case Information"
+        ' 
+        ' lblLEA
+        ' 
+        lblLEA.AutoSize = True
+        lblLEA.Location = New System.Drawing.Point(12, 62)
+        lblLEA.Name = "lblLEA"
+        lblLEA.Size = New System.Drawing.Size(72, 15)
+        lblLEA.TabIndex = 10
+        lblLEA.Text = "L E Angency"
+        ' 
+        ' txbLEAgency
+        ' 
+        txbLEAgency.Location = New System.Drawing.Point(150, 59)
+        txbLEAgency.Name = "txbLEAgency"
+        txbLEAgency.Size = New System.Drawing.Size(235, 23)
+        txbLEAgency.TabIndex = 11
         ' 
         ' lblChild
         ' 
@@ -112,13 +128,13 @@ Partial Class mainForm
         ' 
         txtChildName.Location = New System.Drawing.Point(150, 28)
         txtChildName.Name = "txtChildName"
-        txtChildName.Size = New System.Drawing.Size(370, 23)
+        txtChildName.Size = New System.Drawing.Size(235, 23)
         txtChildName.TabIndex = 0
         ' 
         ' lblOffense
         ' 
         lblOffense.AutoSize = True
-        lblOffense.Location = New System.Drawing.Point(12, 61)
+        lblOffense.Location = New System.Drawing.Point(12, 94)
         lblOffense.Name = "lblOffense"
         lblOffense.Size = New System.Drawing.Size(51, 15)
         lblOffense.TabIndex = 1
@@ -126,15 +142,15 @@ Partial Class mainForm
         ' 
         ' txtOffense
         ' 
-        txtOffense.Location = New System.Drawing.Point(150, 58)
+        txtOffense.Location = New System.Drawing.Point(150, 91)
         txtOffense.Name = "txtOffense"
-        txtOffense.Size = New System.Drawing.Size(370, 23)
+        txtOffense.Size = New System.Drawing.Size(235, 23)
         txtOffense.TabIndex = 1
         ' 
         ' lblCaseNo
         ' 
         lblCaseNo.AutoSize = True
-        lblCaseNo.Location = New System.Drawing.Point(12, 91)
+        lblCaseNo.Location = New System.Drawing.Point(12, 124)
         lblCaseNo.Name = "lblCaseNo"
         lblCaseNo.Size = New System.Drawing.Size(57, 15)
         lblCaseNo.TabIndex = 2
@@ -142,35 +158,16 @@ Partial Class mainForm
         ' 
         ' txtCaseNo
         ' 
-        txtCaseNo.Location = New System.Drawing.Point(150, 88)
+        txtCaseNo.Location = New System.Drawing.Point(150, 121)
         txtCaseNo.MaxLength = 30
         txtCaseNo.Name = "txtCaseNo"
-        txtCaseNo.Size = New System.Drawing.Size(150, 23)
+        txtCaseNo.Size = New System.Drawing.Size(120, 23)
         txtCaseNo.TabIndex = 2
-        ' 
-        ' lblChildId
-        ' 
-        lblChildId.AutoSize = True
-        lblChildId.Location = New System.Drawing.Point(316, 91)
-        lblChildId.Name = "lblChildId"
-        lblChildId.Size = New System.Drawing.Size(52, 15)
-        lblChildId.TabIndex = 3
-        lblChildId.Text = "Child ID:"
-        ' 
-        ' txtChildId
-        ' 
-        txtChildId.BackColor = Drawing.SystemColors.Control
-        txtChildId.Location = New System.Drawing.Point(380, 88)
-        txtChildId.Name = "txtChildId"
-        txtChildId.ReadOnly = True
-        txtChildId.Size = New System.Drawing.Size(140, 23)
-        txtChildId.TabIndex = 4
-        txtChildId.TabStop = False
         ' 
         ' lblStatus
         ' 
         lblStatus.AutoSize = True
-        lblStatus.Location = New System.Drawing.Point(12, 121)
+        lblStatus.Location = New System.Drawing.Point(12, 154)
         lblStatus.Name = "lblStatus"
         lblStatus.Size = New System.Drawing.Size(42, 15)
         lblStatus.TabIndex = 5
@@ -178,15 +175,15 @@ Partial Class mainForm
         ' 
         ' txtStatus
         ' 
-        txtStatus.Location = New System.Drawing.Point(150, 118)
+        txtStatus.Location = New System.Drawing.Point(150, 151)
         txtStatus.Name = "txtStatus"
-        txtStatus.Size = New System.Drawing.Size(370, 23)
+        txtStatus.Size = New System.Drawing.Size(235, 23)
         txtStatus.TabIndex = 3
         ' 
         ' lblPrePact
         ' 
         lblPrePact.AutoSize = True
-        lblPrePact.Location = New System.Drawing.Point(12, 156)
+        lblPrePact.Location = New System.Drawing.Point(12, 189)
         lblPrePact.Name = "lblPrePact"
         lblPrePact.Size = New System.Drawing.Size(87, 15)
         lblPrePact.TabIndex = 6
@@ -195,7 +192,7 @@ Partial Class mainForm
         ' dtpPrePact
         ' 
         dtpPrePact.Format = System.Windows.Forms.DateTimePickerFormat.Short
-        dtpPrePact.Location = New System.Drawing.Point(150, 152)
+        dtpPrePact.Location = New System.Drawing.Point(150, 185)
         dtpPrePact.Name = "dtpPrePact"
         dtpPrePact.Size = New System.Drawing.Size(130, 23)
         dtpPrePact.TabIndex = 4
@@ -203,7 +200,7 @@ Partial Class mainForm
         ' lblDob
         ' 
         lblDob.AutoSize = True
-        lblDob.Location = New System.Drawing.Point(12, 186)
+        lblDob.Location = New System.Drawing.Point(12, 219)
         lblDob.Name = "lblDob"
         lblDob.Size = New System.Drawing.Size(76, 15)
         lblDob.TabIndex = 7
@@ -212,7 +209,7 @@ Partial Class mainForm
         ' dtpDob
         ' 
         dtpDob.Format = System.Windows.Forms.DateTimePickerFormat.Short
-        dtpDob.Location = New System.Drawing.Point(150, 182)
+        dtpDob.Location = New System.Drawing.Point(150, 215)
         dtpDob.Name = "dtpDob"
         dtpDob.Size = New System.Drawing.Size(130, 23)
         dtpDob.TabIndex = 5
@@ -220,7 +217,7 @@ Partial Class mainForm
         ' lblInitial
         ' 
         lblInitial.AutoSize = True
-        lblInitial.Location = New System.Drawing.Point(12, 216)
+        lblInitial.Location = New System.Drawing.Point(12, 249)
         lblInitial.Name = "lblInitial"
         lblInitial.Size = New System.Drawing.Size(107, 15)
         lblInitial.TabIndex = 8
@@ -229,7 +226,7 @@ Partial Class mainForm
         ' dtpInitialSubmit
         ' 
         dtpInitialSubmit.Format = System.Windows.Forms.DateTimePickerFormat.Short
-        dtpInitialSubmit.Location = New System.Drawing.Point(150, 212)
+        dtpInitialSubmit.Location = New System.Drawing.Point(150, 245)
         dtpInitialSubmit.Name = "dtpInitialSubmit"
         dtpInitialSubmit.Size = New System.Drawing.Size(130, 23)
         dtpInitialSubmit.TabIndex = 6
@@ -237,7 +234,7 @@ Partial Class mainForm
         ' lblLastStatus
         ' 
         lblLastStatus.AutoSize = True
-        lblLastStatus.Location = New System.Drawing.Point(12, 246)
+        lblLastStatus.Location = New System.Drawing.Point(12, 279)
         lblLastStatus.Name = "lblLastStatus"
         lblLastStatus.Size = New System.Drawing.Size(94, 15)
         lblLastStatus.TabIndex = 9
@@ -246,7 +243,7 @@ Partial Class mainForm
         ' dtpLastStatus
         ' 
         dtpLastStatus.Format = System.Windows.Forms.DateTimePickerFormat.Short
-        dtpLastStatus.Location = New System.Drawing.Point(150, 242)
+        dtpLastStatus.Location = New System.Drawing.Point(150, 275)
         dtpLastStatus.Name = "dtpLastStatus"
         dtpLastStatus.Size = New System.Drawing.Size(130, 23)
         dtpLastStatus.TabIndex = 7
@@ -254,7 +251,7 @@ Partial Class mainForm
         ' chkIntake
         ' 
         chkIntake.AutoSize = True
-        chkIntake.Location = New System.Drawing.Point(150, 275)
+        chkIntake.Location = New System.Drawing.Point(368, 275)
         chkIntake.Name = "chkIntake"
         chkIntake.Size = New System.Drawing.Size(120, 19)
         chkIntake.TabIndex = 8
@@ -273,9 +270,9 @@ Partial Class mainForm
         grpResults.Controls.Add(lblThreshold)
         grpResults.Controls.Add(lblStaffingCap)
         grpResults.Controls.Add(lblStaffing)
-        grpResults.Location = New System.Drawing.Point(564, 12)
+        grpResults.Location = New System.Drawing.Point(512, 12)
         grpResults.Name = "grpResults"
-        grpResults.Size = New System.Drawing.Size(314, 305)
+        grpResults.Size = New System.Drawing.Size(366, 305)
         grpResults.TabIndex = 1
         grpResults.TabStop = False
         grpResults.Text = "Results"
@@ -407,7 +404,7 @@ Partial Class mainForm
         ' 
         ' lvRecords
         ' 
-        lvRecords.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {colChildId, colCaseNo, colChild, colOffense, colStatus, colPrePact, colThreshold, colIntake})
+        lvRecords.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {colChild, colLEA, colCaseNo, colOffense, colStatus, colPrePact, colThreshold, colIntake})
         lvRecords.FullRowSelect = True
         lvRecords.GridLines = True
         lvRecords.Location = New System.Drawing.Point(10, 22)
@@ -418,20 +415,19 @@ Partial Class mainForm
         lvRecords.UseCompatibleStateImageBehavior = False
         lvRecords.View = System.Windows.Forms.View.Details
         ' 
-        ' colChildId
+        ' colChild
         ' 
-        colChildId.Text = "Child ID"
-        colChildId.Width = 80
+        colChild.Text = "Child Name"
+        colChild.Width = 150
+        ' 
+        ' colLEA
+        ' 
+        colLEA.Text = "LEA"
         ' 
         ' colCaseNo
         ' 
         colCaseNo.Text = "Case No."
         colCaseNo.Width = 100
-        ' 
-        ' colChild
-        ' 
-        colChild.Text = "Child Name"
-        colChild.Width = 150
         ' 
         ' colOffense
         ' 
@@ -540,8 +536,6 @@ Partial Class mainForm
     Friend WithEvents txtOffense As System.Windows.Forms.TextBox
     Friend WithEvents lblCaseNo As System.Windows.Forms.Label
     Friend WithEvents txtCaseNo As System.Windows.Forms.TextBox
-    Friend WithEvents lblChildId As System.Windows.Forms.Label
-    Friend WithEvents txtChildId As System.Windows.Forms.TextBox
     Friend WithEvents lblStatus As System.Windows.Forms.Label
     Friend WithEvents txtStatus As System.Windows.Forms.TextBox
     Friend WithEvents lblPrePact As System.Windows.Forms.Label
@@ -568,7 +562,6 @@ Partial Class mainForm
     Friend WithEvents txtNotes As System.Windows.Forms.TextBox
     Friend WithEvents grpRecords As System.Windows.Forms.GroupBox
     Friend WithEvents lvRecords As System.Windows.Forms.ListView
-    Friend WithEvents colChildId As System.Windows.Forms.ColumnHeader
     Friend WithEvents colCaseNo As System.Windows.Forms.ColumnHeader
     Friend WithEvents colChild As System.Windows.Forms.ColumnHeader
     Friend WithEvents colOffense As System.Windows.Forms.ColumnHeader
@@ -581,4 +574,7 @@ Partial Class mainForm
     Friend WithEvents btnClear As System.Windows.Forms.Button
     Friend WithEvents btnDelete As System.Windows.Forms.Button
     Friend WithEvents btnClose As System.Windows.Forms.Button
+    Friend WithEvents colLEA As System.Windows.Forms.ColumnHeader
+    Friend WithEvents lblLEA As System.Windows.Forms.Label
+    Friend WithEvents txbLEAgency As System.Windows.Forms.TextBox
 End Class
