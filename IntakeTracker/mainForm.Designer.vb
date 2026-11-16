@@ -57,14 +57,17 @@ Partial Class mainForm
         colCaseNo = New System.Windows.Forms.ColumnHeader()
         colOffense = New System.Windows.Forms.ColumnHeader()
         colStatus = New System.Windows.Forms.ColumnHeader()
-        colPrePact = New System.Windows.Forms.ColumnHeader()
-        colThreshold = New System.Windows.Forms.ColumnHeader()
         colIntake = New System.Windows.Forms.ColumnHeader()
+        colAge = New System.Windows.Forms.ColumnHeader()
+        colPending = New System.Windows.Forms.ColumnHeader()
+        colThreshold = New System.Windows.Forms.ColumnHeader()
         btnCalculate = New System.Windows.Forms.Button()
         btnSave = New System.Windows.Forms.Button()
         btnClear = New System.Windows.Forms.Button()
         btnDelete = New System.Windows.Forms.Button()
         btnClose = New System.Windows.Forms.Button()
+        lbl18BirthdayCap = New System.Windows.Forms.Label()
+        lbl18Birthday = New System.Windows.Forms.Label()
         grpCase.SuspendLayout()
         grpResults.SuspendLayout()
         grpNotes.SuspendLayout()
@@ -104,16 +107,16 @@ Partial Class mainForm
         lblLEA.AutoSize = True
         lblLEA.Location = New System.Drawing.Point(12, 62)
         lblLEA.Name = "lblLEA"
-        lblLEA.Size = New System.Drawing.Size(72, 15)
+        lblLEA.Size = New System.Drawing.Size(69, 15)
         lblLEA.TabIndex = 10
-        lblLEA.Text = "L E Angency"
+        lblLEA.Text = "LE Angency"
         ' 
         ' txbLEAgency
         ' 
         txbLEAgency.Location = New System.Drawing.Point(150, 59)
         txbLEAgency.Name = "txbLEAgency"
         txbLEAgency.Size = New System.Drawing.Size(235, 23)
-        txbLEAgency.TabIndex = 11
+        txbLEAgency.TabIndex = 1
         ' 
         ' lblChild
         ' 
@@ -145,7 +148,7 @@ Partial Class mainForm
         txtOffense.Location = New System.Drawing.Point(150, 91)
         txtOffense.Name = "txtOffense"
         txtOffense.Size = New System.Drawing.Size(235, 23)
-        txtOffense.TabIndex = 1
+        txtOffense.TabIndex = 2
         ' 
         ' lblCaseNo
         ' 
@@ -162,7 +165,7 @@ Partial Class mainForm
         txtCaseNo.MaxLength = 30
         txtCaseNo.Name = "txtCaseNo"
         txtCaseNo.Size = New System.Drawing.Size(120, 23)
-        txtCaseNo.TabIndex = 2
+        txtCaseNo.TabIndex = 3
         ' 
         ' lblStatus
         ' 
@@ -178,7 +181,7 @@ Partial Class mainForm
         txtStatus.Location = New System.Drawing.Point(150, 151)
         txtStatus.Name = "txtStatus"
         txtStatus.Size = New System.Drawing.Size(235, 23)
-        txtStatus.TabIndex = 3
+        txtStatus.TabIndex = 4
         ' 
         ' lblPrePact
         ' 
@@ -195,7 +198,7 @@ Partial Class mainForm
         dtpPrePact.Location = New System.Drawing.Point(150, 185)
         dtpPrePact.Name = "dtpPrePact"
         dtpPrePact.Size = New System.Drawing.Size(130, 23)
-        dtpPrePact.TabIndex = 4
+        dtpPrePact.TabIndex = 5
         ' 
         ' lblDob
         ' 
@@ -212,7 +215,7 @@ Partial Class mainForm
         dtpDob.Location = New System.Drawing.Point(150, 215)
         dtpDob.Name = "dtpDob"
         dtpDob.Size = New System.Drawing.Size(130, 23)
-        dtpDob.TabIndex = 5
+        dtpDob.TabIndex = 6
         ' 
         ' lblInitial
         ' 
@@ -229,7 +232,7 @@ Partial Class mainForm
         dtpInitialSubmit.Location = New System.Drawing.Point(150, 245)
         dtpInitialSubmit.Name = "dtpInitialSubmit"
         dtpInitialSubmit.Size = New System.Drawing.Size(130, 23)
-        dtpInitialSubmit.TabIndex = 6
+        dtpInitialSubmit.TabIndex = 7
         ' 
         ' lblLastStatus
         ' 
@@ -246,7 +249,7 @@ Partial Class mainForm
         dtpLastStatus.Location = New System.Drawing.Point(150, 275)
         dtpLastStatus.Name = "dtpLastStatus"
         dtpLastStatus.Size = New System.Drawing.Size(130, 23)
-        dtpLastStatus.TabIndex = 7
+        dtpLastStatus.TabIndex = 8
         ' 
         ' chkIntake
         ' 
@@ -260,6 +263,8 @@ Partial Class mainForm
         ' 
         ' grpResults
         ' 
+        grpResults.Controls.Add(lbl18BirthdayCap)
+        grpResults.Controls.Add(lbl18Birthday)
         grpResults.Controls.Add(lblPrePactCap)
         grpResults.Controls.Add(lblPrePactDays)
         grpResults.Controls.Add(lblAgeCap)
@@ -272,7 +277,7 @@ Partial Class mainForm
         grpResults.Controls.Add(lblStaffing)
         grpResults.Location = New System.Drawing.Point(512, 12)
         grpResults.Name = "grpResults"
-        grpResults.Size = New System.Drawing.Size(366, 305)
+        grpResults.Size = New System.Drawing.Size(384, 424)
         grpResults.TabIndex = 1
         grpResults.TabStop = False
         grpResults.Text = "Results"
@@ -299,7 +304,7 @@ Partial Class mainForm
         ' lblAgeCap
         ' 
         lblAgeCap.AutoSize = True
-        lblAgeCap.Location = New System.Drawing.Point(14, 82)
+        lblAgeCap.Location = New System.Drawing.Point(14, 151)
         lblAgeCap.Name = "lblAgeCap"
         lblAgeCap.Size = New System.Drawing.Size(74, 15)
         lblAgeCap.TabIndex = 2
@@ -309,7 +314,7 @@ Partial Class mainForm
         ' 
         lblAge.AutoSize = True
         lblAge.Font = New System.Drawing.Font("Segoe UI", 11F, Drawing.FontStyle.Bold)
-        lblAge.Location = New System.Drawing.Point(14, 102)
+        lblAge.Location = New System.Drawing.Point(14, 171)
         lblAge.Name = "lblAge"
         lblAge.Size = New System.Drawing.Size(15, 20)
         lblAge.TabIndex = 3
@@ -318,7 +323,7 @@ Partial Class mainForm
         ' lblPendingCap
         ' 
         lblPendingCap.AutoSize = True
-        lblPendingCap.Location = New System.Drawing.Point(14, 136)
+        lblPendingCap.Location = New System.Drawing.Point(14, 205)
         lblPendingCap.Name = "lblPendingCap"
         lblPendingCap.Size = New System.Drawing.Size(82, 15)
         lblPendingCap.TabIndex = 4
@@ -328,7 +333,7 @@ Partial Class mainForm
         ' 
         lblPending.AutoSize = True
         lblPending.Font = New System.Drawing.Font("Segoe UI", 11F, Drawing.FontStyle.Bold)
-        lblPending.Location = New System.Drawing.Point(14, 156)
+        lblPending.Location = New System.Drawing.Point(14, 225)
         lblPending.Name = "lblPending"
         lblPending.Size = New System.Drawing.Size(15, 20)
         lblPending.TabIndex = 5
@@ -337,7 +342,7 @@ Partial Class mainForm
         ' lblThresholdCap
         ' 
         lblThresholdCap.AutoSize = True
-        lblThresholdCap.Location = New System.Drawing.Point(14, 190)
+        lblThresholdCap.Location = New System.Drawing.Point(14, 259)
         lblThresholdCap.Name = "lblThresholdCap"
         lblThresholdCap.Size = New System.Drawing.Size(182, 15)
         lblThresholdCap.TabIndex = 6
@@ -347,7 +352,7 @@ Partial Class mainForm
         ' 
         lblThreshold.AutoSize = True
         lblThreshold.Font = New System.Drawing.Font("Segoe UI", 11F, Drawing.FontStyle.Bold)
-        lblThreshold.Location = New System.Drawing.Point(14, 210)
+        lblThreshold.Location = New System.Drawing.Point(14, 279)
         lblThreshold.Name = "lblThreshold"
         lblThreshold.Size = New System.Drawing.Size(15, 20)
         lblThreshold.TabIndex = 7
@@ -356,7 +361,7 @@ Partial Class mainForm
         ' lblStaffingCap
         ' 
         lblStaffingCap.AutoSize = True
-        lblStaffingCap.Location = New System.Drawing.Point(14, 244)
+        lblStaffingCap.Location = New System.Drawing.Point(14, 313)
         lblStaffingCap.Name = "lblStaffingCap"
         lblStaffingCap.Size = New System.Drawing.Size(159, 15)
         lblStaffingCap.TabIndex = 8
@@ -366,7 +371,7 @@ Partial Class mainForm
         ' 
         lblStaffing.AutoSize = True
         lblStaffing.Font = New System.Drawing.Font("Segoe UI", 11F, Drawing.FontStyle.Bold)
-        lblStaffing.Location = New System.Drawing.Point(14, 264)
+        lblStaffing.Location = New System.Drawing.Point(14, 333)
         lblStaffing.Name = "lblStaffing"
         lblStaffing.Size = New System.Drawing.Size(15, 20)
         lblStaffing.TabIndex = 9
@@ -377,7 +382,7 @@ Partial Class mainForm
         grpNotes.Controls.Add(txtNotes)
         grpNotes.Location = New System.Drawing.Point(12, 324)
         grpNotes.Name = "grpNotes"
-        grpNotes.Size = New System.Drawing.Size(866, 112)
+        grpNotes.Size = New System.Drawing.Size(494, 112)
         grpNotes.TabIndex = 2
         grpNotes.TabStop = False
         grpNotes.Text = "Progress Notes"
@@ -389,29 +394,29 @@ Partial Class mainForm
         txtNotes.Multiline = True
         txtNotes.Name = "txtNotes"
         txtNotes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        txtNotes.Size = New System.Drawing.Size(846, 78)
-        txtNotes.TabIndex = 9
+        txtNotes.Size = New System.Drawing.Size(478, 78)
+        txtNotes.TabIndex = 0
         ' 
         ' grpRecords
         ' 
         grpRecords.Controls.Add(lvRecords)
         grpRecords.Location = New System.Drawing.Point(12, 444)
         grpRecords.Name = "grpRecords"
-        grpRecords.Size = New System.Drawing.Size(866, 210)
+        grpRecords.Size = New System.Drawing.Size(884, 210)
         grpRecords.TabIndex = 3
         grpRecords.TabStop = False
         grpRecords.Text = "Records"
         ' 
         ' lvRecords
         ' 
-        lvRecords.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {colChild, colLEA, colCaseNo, colOffense, colStatus, colPrePact, colThreshold, colIntake})
+        lvRecords.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {colChild, colLEA, colCaseNo, colOffense, colStatus, colIntake, colAge, colPending, colThreshold})
         lvRecords.FullRowSelect = True
         lvRecords.GridLines = True
         lvRecords.Location = New System.Drawing.Point(10, 22)
         lvRecords.MultiSelect = False
         lvRecords.Name = "lvRecords"
-        lvRecords.Size = New System.Drawing.Size(846, 178)
-        lvRecords.TabIndex = 10
+        lvRecords.Size = New System.Drawing.Size(868, 178)
+        lvRecords.TabIndex = 0
         lvRecords.UseCompatibleStateImageBehavior = False
         lvRecords.View = System.Windows.Forms.View.Details
         ' 
@@ -439,11 +444,6 @@ Partial Class mainForm
         colStatus.Text = "Status"
         colStatus.Width = 120
         ' 
-        ' colPrePact
-        ' 
-        colPrePact.Text = "Pre-PACT Date"
-        colPrePact.Width = 85
-        ' 
         ' colThreshold
         ' 
         colThreshold.Text = "Threshold"
@@ -453,6 +453,16 @@ Partial Class mainForm
         ' 
         colIntake.Text = "Intake"
         colIntake.Width = 50
+        ' 
+        ' colAge
+        ' 
+        colAge.Text = "Age"
+        colAge.Width = 45
+        ' 
+        ' colPending
+        ' 
+        colPending.Text = "Days Pending"
+        colPending.Width = 90
         ' 
         ' btnCalculate
         ' 
@@ -499,11 +509,30 @@ Partial Class mainForm
         btnClose.Text = "Close"
         btnClose.UseVisualStyleBackColor = True
         ' 
+        ' lbl18BirthdayCap
+        ' 
+        lbl18BirthdayCap.AutoSize = True
+        lbl18BirthdayCap.Location = New System.Drawing.Point(14, 91)
+        lbl18BirthdayCap.Name = "lbl18BirthdayCap"
+        lbl18BirthdayCap.Size = New System.Drawing.Size(107, 15)
+        lbl18BirthdayCap.TabIndex = 10
+        lbl18BirthdayCap.Text = "18th Birthday Date:"
+        ' 
+        ' lbl18Birthday
+        ' 
+        lbl18Birthday.AutoSize = True
+        lbl18Birthday.Font = New System.Drawing.Font("Segoe UI", 11F, Drawing.FontStyle.Bold)
+        lbl18Birthday.Location = New System.Drawing.Point(14, 111)
+        lbl18Birthday.Name = "lbl18Birthday"
+        lbl18Birthday.Size = New System.Drawing.Size(15, 20)
+        lbl18Birthday.TabIndex = 11
+        lbl18Birthday.Text = "-"
+        ' 
         ' mainForm
         ' 
         AutoScaleDimensions = New System.Drawing.SizeF(7F, 15F)
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        ClientSize = New System.Drawing.Size(890, 710)
+        ClientSize = New System.Drawing.Size(908, 710)
         Controls.Add(btnClose)
         Controls.Add(btnDelete)
         Controls.Add(btnClear)
@@ -566,7 +595,6 @@ Partial Class mainForm
     Friend WithEvents colChild As System.Windows.Forms.ColumnHeader
     Friend WithEvents colOffense As System.Windows.Forms.ColumnHeader
     Friend WithEvents colStatus As System.Windows.Forms.ColumnHeader
-    Friend WithEvents colPrePact As System.Windows.Forms.ColumnHeader
     Friend WithEvents colThreshold As System.Windows.Forms.ColumnHeader
     Friend WithEvents colIntake As System.Windows.Forms.ColumnHeader
     Friend WithEvents btnCalculate As System.Windows.Forms.Button
@@ -577,4 +605,8 @@ Partial Class mainForm
     Friend WithEvents colLEA As System.Windows.Forms.ColumnHeader
     Friend WithEvents lblLEA As System.Windows.Forms.Label
     Friend WithEvents txbLEAgency As System.Windows.Forms.TextBox
+    Friend WithEvents lbl18BirthdayCap As System.Windows.Forms.Label
+    Friend WithEvents lbl18Birthday As System.Windows.Forms.Label
+    Friend WithEvents colAge As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colPending As System.Windows.Forms.ColumnHeader
 End Class

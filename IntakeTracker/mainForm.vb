@@ -9,7 +9,11 @@ Public Class mainForm
 
     Private Const StatusWindowDays As Integer = 60
     Private Const PrePactWindowDays As Integer = 180
-    Private Const FieldCount As Integer = 11
+    Private Const FieldCount As Integer = 12
+    Private Const LegacyFieldCount As Integer = 11   ' files written before the LE Agency column existed
+    Private Const LegacyLeaInsertIndex As Integer = 3
+    Private Const IntakeNewIndex As Integer = 6      ' Intake Completed follows Case Status
+    Private Const IntakeOldIndex As Integer = 10     ' older files: it followed Last Case Status
     Private Const DateFmt As String = "yyyy-MM-dd"
     Private Const IdPrefix As String = "JV-"
 
@@ -22,13 +26,15 @@ Public Class mainForm
     Private Const PadColumns As Integer = FieldCount - 1   ' every column except Progress Notes
     Private Const TabSize As Integer = 8
     Private Const SeparatorChar As Char = "-"c
-    Private Const SeparatorExtra As Integer = 30           ' dotted line runs this far under the notes column
+    Private Const SeparatorExtra As Integer = 20           ' dotted line runs this far under the notes column
 
     Private ReadOnly FileHeaders() As String = {
-        "Child ID", "Case No.", "Child Name", "Offense", "Case Status",
-        "Pre-PACT Date", "Date of Birth", "Initial Submit Date", "Last Case Status",
-        "Intake Completed", "Progress Notes"
+        "Child ID", "Case No.", "Child Name", "LE Agency", "Offense", "Case Status",
+        "Intake Comp", "Pre-PACT Date", "Date of Birth", "Initial Sub Date",
+        "Last Case Stat", "Notes"
     }
+
+    Private Const CaseGroupTitle As String = "Case Information"
 
     Private ReadOnly rng As New Random()
 
@@ -36,6 +42,7 @@ Public Class mainForm
         Public ChildId As String
         Public CaseNo As String
         Public ChildName As String
+        Public LEAgency As String
         Public Offense As String
         Public Status As String
         Public PrePact As Date
@@ -116,11 +123,14 @@ Public Class mainForm
         lblPrePactDays.Text = PrePactCountdownText(prePactDays)
         lblPrePactDays.ForeColor = If(prePactDays < 0, Color.Firebrick, SystemColors.ControlText)
 
-        ' Current age in years
+        ' Current age in years (orange at 17 or older, red when over 18)
         Dim dob As Date = dtpDob.Value.Date
-        Dim age As Integer = today.Year - dob.Year
-        If dob > today.AddYears(-age) Then age -= 1
+        Dim age As Integer = CalcAge(dob, today)
         lblAge.Text = If(age < 0, "-", age.ToString() & If(age = 1, " year", " years"))
+        lblAge.ForeColor = AgeColor(age, SystemColors.ControlText)
+
+        ' 18th birthday
+        lbl18Birthday.Text = dob.AddYears(18).ToString("MM/dd/yyyy")
 
         ' Days pending since intake submission
         Dim pending As Integer = (today - dtpInitialSubmit.Value.Date).Days
@@ -134,6 +144,20 @@ Public Class mainForm
         lblStaffing.Text = CountdownText(staffingDays)
         lblStaffing.ForeColor = If(staffingDays < 0, Color.Firebrick, SystemColors.ControlText)
     End Sub
+
+    ' Whole years between the date of birth and the given date.
+    Private Function CalcAge(dob As Date, onDate As Date) As Integer
+        Dim age As Integer = onDate.Year - dob.Year
+        If dob > onDate.AddYears(-age) Then age -= 1
+        Return age
+    End Function
+
+    ' Age 17 or older = orange; older than 18 = red; otherwise the normal color.
+    Private Function AgeColor(age As Integer, normal As Color) As Color
+        If age >= 18 Then Return Color.Red
+        If age >= 17 Then Return Color.DarkOrange
+        Return normal
+    End Function
 
     ' Pre-PACT countdown text: never shows "Today"; zero is "0 days".
     Private Function PrePactCountdownText(days As Integer) As String
@@ -179,6 +203,7 @@ Public Class mainForm
             .ChildId = currentChildId,
             .CaseNo = txtCaseNo.Text.Trim(),
             .ChildName = txtChildName.Text.Trim(),
+            .LEAgency = txbLEAgency.Text.Trim(),
             .Offense = txtOffense.Text.Trim(),
             .Status = txtStatus.Text.Trim(),
             .PrePact = dtpPrePact.Value.Date,
@@ -202,8 +227,10 @@ Public Class mainForm
             Return
         End If
 
+        ' Saved: show it in the list and get the form ready for the next child,
+        ' so the next Save creates a new record instead of updating this one.
         RefreshList()
-        SelectInList(rec.ChildId)
+        ClearForm()
         MessageBox.Show("Record saved.", "Saved", MessageBoxButtons.OK, MessageBoxIcon.Information)
     End Sub
 
@@ -244,6 +271,7 @@ Public Class mainForm
 
         currentChildId = ""
         txtChildName.Clear()
+        txbLEAgency.Clear()
         txtOffense.Clear()
         txtCaseNo.Clear()
         txtStatus.Clear()
@@ -254,10 +282,12 @@ Public Class mainForm
         dtpInitialSubmit.Value = Date.Today
         dtpLastStatus.Value = Date.Today
 
-        For Each lbl In {lblPrePactDays, lblAge, lblPending, lblThreshold, lblStaffing}
+        For Each lbl In {lblPrePactDays, lblAge, lblPending, lblThreshold, lblStaffing, lbl18Birthday}
             lbl.Text = "-"
             lbl.ForeColor = SystemColors.ControlText
         Next
+
+        UpdateModeCue()
         txtChildName.Focus()
     End Sub
 
@@ -265,6 +295,7 @@ Public Class mainForm
         currentChildId = rec.ChildId
         txtCaseNo.Text = rec.CaseNo
         txtChildName.Text = rec.ChildName
+        txbLEAgency.Text = rec.LEAgency
         txtOffense.Text = rec.Offense
         txtStatus.Text = rec.Status
         dtpPrePact.Value = rec.PrePact
@@ -273,42 +304,52 @@ Public Class mainForm
         dtpLastStatus.Value = rec.LastStatus
         chkIntake.Checked = rec.IntakeCompleted
         txtNotes.Text = rec.Notes
+        UpdateModeCue()
         Calculate()
+    End Sub
+
+    ' Title of the Case Information box shows whether Save will add a new record
+    ' or update the saved record that is loaded on the form.
+    Private Sub UpdateModeCue()
+        If String.IsNullOrEmpty(currentChildId) Then
+            grpCase.Text = CaseGroupTitle & " - New Record"
+        Else
+            grpCase.Text = CaseGroupTitle & " - Editing Saved Record (press Clear for a new child)"
+        End If
     End Sub
 
 #End Region
 
 #Region "Records list"
 
+    ' Columns must match the designer (subitems are added in column order):
+    ' Child Name, LEA, Case No., Offense, Status, Intake, Age, Days Pending, Threshold.
+    ' The child ID is kept in the item's Tag only.
     Private Sub RefreshList()
+        Dim today As Date = Date.Today
+
         loadingSelection = True
         lvRecords.BeginUpdate()
         lvRecords.Items.Clear()
         For Each r In records.OrderBy(Function(x) x.ChildName)
-            Dim item As New ListViewItem(r.ChildId)
+            Dim age As Integer = CalcAge(r.Dob, today)
+            Dim pending As Integer = Math.Max(0, (today - r.InitialSubmit).Days)
+
+            Dim item As New ListViewItem(r.ChildName)
+            item.UseItemStyleForSubItems = False   ' lets the Age cell have its own color
             item.Tag = r.ChildId
+            item.SubItems.Add(r.LEAgency)
             item.SubItems.Add(r.CaseNo)
-            item.SubItems.Add(r.ChildName)
             item.SubItems.Add(r.Offense)
             item.SubItems.Add(r.Status)
-            item.SubItems.Add(r.PrePact.ToString("MM/dd/yyyy"))
-            item.SubItems.Add(r.LastStatus.AddDays(StatusWindowDays).ToString("MM/dd/yyyy"))
             item.SubItems.Add(If(r.IntakeCompleted, "Yes", "No"))
+            Dim ageCell As ListViewItem.ListViewSubItem = item.SubItems.Add(If(age < 0, "", age.ToString()))
+            ageCell.ForeColor = AgeColor(age, lvRecords.ForeColor)
+            item.SubItems.Add(pending.ToString())
+            item.SubItems.Add(r.LastStatus.AddDays(StatusWindowDays).ToString("MM/dd/yyyy"))
             lvRecords.Items.Add(item)
         Next
         lvRecords.EndUpdate()
-        loadingSelection = False
-    End Sub
-
-    Private Sub SelectInList(childId As String)
-        loadingSelection = True
-        For Each item As ListViewItem In lvRecords.Items
-            If CStr(item.Tag) = childId Then
-                item.Selected = True
-                item.EnsureVisible()
-                Exit For
-            End If
-        Next
         loadingSelection = False
     End Sub
 
@@ -320,6 +361,8 @@ Public Class mainForm
         records.Clear()
         If Not File.Exists(DATA_FILE) Then Return
 
+        Dim skipped As Integer = 0
+
         Try
             Using sr As New StreamReader(DATA_FILE, Encoding.UTF8)
                 Do While Not sr.EndOfStream
@@ -330,7 +373,10 @@ Public Class mainForm
                     If IsSeparatorLine(line) Then Continue Do
 
                     Dim f() As String = SplitLine(line)
-                    If f Is Nothing Then Continue Do
+                    If f Is Nothing Then
+                        skipped += 1
+                        Continue Do
+                    End If
 
                     ' Remove the alignment padding (every column except Progress Notes)
                     For i As Integer = 0 To PadColumns - 1
@@ -340,43 +386,92 @@ Public Class mainForm
                     ' Header row is ignored
                     If f(0).Trim().Equals(HeaderFirstField, StringComparison.OrdinalIgnoreCase) Then Continue Do
 
-                    Dim rec As New CaseRecord
-                    rec.ChildId = Unescape(f(0))
-                    rec.CaseNo = Unescape(f(1))
-                    rec.ChildName = Unescape(f(2))
-                    rec.Offense = Unescape(f(3))
-                    rec.Status = Unescape(f(4))
-                    If Not TryParseDate(f(5), rec.PrePact) Then Continue Do
-                    If Not TryParseDate(f(6), rec.Dob) Then Continue Do
-                    If Not TryParseDate(f(7), rec.InitialSubmit) Then Continue Do
-                    If Not TryParseDate(f(8), rec.LastStatus) Then Continue Do
-                    rec.IntakeCompleted = (f(9) = "1")
-                    rec.Notes = Unescape(f(10))
+                    Dim rec As CaseRecord = ParseRecord(f)
+                    If rec Is Nothing Then
+                        skipped += 1
+                        Continue Do
+                    End If
                     records.Add(rec)
                 Loop
             End Using
         Catch ex As Exception
             MessageBox.Show("Could not read the data file:" & vbCrLf & DATA_FILE & vbCrLf & vbCrLf & ex.Message,
                             "File Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return
         End Try
+
+        If skipped > 0 Then
+            MessageBox.Show(skipped.ToString() & " line(s) in the data file could not be read and were skipped." &
+                            vbCrLf & vbCrLf & "They will be permanently removed from the file the next time you save. " &
+                            "Copy the file now if you need to keep them:" & vbCrLf & DATA_FILE,
+                            "Data File Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+        End If
     End Sub
+
+    ' Builds a record from a split line (already normalized to FieldCount fields).
+    ' Returns Nothing if the line is not a valid record.
+    Private Function ParseRecord(f() As String) As CaseRecord
+        Dim rec As New CaseRecord
+        rec.ChildId = Unescape(f(0))
+        If rec.ChildId.Length = 0 Then Return Nothing
+
+        rec.CaseNo = Unescape(f(1))
+        rec.ChildName = Unescape(f(2))
+        rec.LEAgency = Unescape(f(3))
+        rec.Offense = Unescape(f(4))
+        rec.Status = Unescape(f(5))
+
+        Dim intake As String = f(6).Trim()
+        rec.IntakeCompleted = intake.Equals("Yes", StringComparison.OrdinalIgnoreCase) OrElse
+                              intake.Equals("True", StringComparison.OrdinalIgnoreCase) OrElse
+                              intake = "1"
+
+        If Not TryParseDate(f(7), rec.PrePact) Then Return Nothing
+        If Not TryParseDate(f(8), rec.Dob) Then Return Nothing
+        If Not TryParseDate(f(9), rec.InitialSubmit) Then Return Nothing
+        If Not TryParseDate(f(10), rec.LastStatus) Then Return Nothing
+
+        rec.Notes = Unescape(f(11))
+        Return rec
+    End Function
 
     Private Function IsSeparatorLine(line As String) As Boolean
         Dim t As String = line.Trim()
         Return t.Length > 0 AndAlso t.All(Function(ch) ch = SeparatorChar)
     End Function
 
-    ' Splits a data line into fields. Tab-separated is the current format;
-    ' lines in the old "|"-separated format are still readable and are
-    ' converted to the current layout the next time the file is saved.
+    ' Splits a data line into fields and returns exactly FieldCount of them, in the
+    ' current column order. Tab-separated is the current format; the old "|"-separated
+    ' format is still readable. Lines from before the LE Agency column (11 fields) get a
+    ' blank LE Agency inserted, and lines from before Intake Completed moved up (it used
+    ' to follow Last Case Status) are rearranged. Everything is rewritten in the current
+    ' layout on the next save.
     Private Function SplitLine(line As String) As String()
         Dim f() As String = line.Split(ControlChars.Tab)
-        If f.Length >= FieldCount Then Return f
+        If f.Length < LegacyFieldCount Then
+            f = line.Split("|"c)
+            If f.Length < LegacyFieldCount Then Return Nothing
+        End If
 
-        f = line.Split("|"c)
-        If f.Length >= FieldCount Then Return f
+        If f.Length = LegacyFieldCount Then
+            Dim fields As New List(Of String)(f)
+            fields.Insert(LegacyLeaInsertIndex, "")
+            f = fields.ToArray()
+        End If
 
-        Return Nothing
+        ' Current layout has Last Case Status (a date) at position 10.
+        ' If something else is there, the line is in the older order: Intake Completed
+        ' came after Last Case Status, so move it up to follow Case Status.
+        Dim probe As Date
+        If Not TryParseDate(f(IntakeOldIndex).Trim(), probe) Then
+            Dim reordered As New List(Of String)(f)
+            Dim intakeValue As String = reordered(IntakeOldIndex)
+            reordered.RemoveAt(IntakeOldIndex)
+            reordered.Insert(IntakeNewIndex, intakeValue)
+            f = reordered.ToArray()
+        End If
+
+        Return f
     End Function
 
     Private Function WriteRecords() As Boolean
@@ -390,15 +485,16 @@ Public Class mainForm
             For Each r In records
                 rows.Add(New String() {
                     Escape(r.ChildId),
-                    Escape(r.CaseNo),
                     Escape(r.ChildName),
+                    Escape(r.LEAgency),
+                    Escape(r.CaseNo),
                     Escape(r.Offense),
                     Escape(r.Status),
+                    If(r.IntakeCompleted, "Yes", "No"),
                     r.PrePact.ToString(DateFmt),
                     r.Dob.ToString(DateFmt),
                     r.InitialSubmit.ToString(DateFmt),
                     r.LastStatus.ToString(DateFmt),
-                    If(r.IntakeCompleted, "Yes", "No"),
                     Escape(r.Notes)
                 })
             Next
@@ -418,8 +514,8 @@ Public Class mainForm
 
             Using sw As New StreamWriter(DATA_FILE, False, Encoding.UTF8)
                 sw.WriteLine(FormatRow(FileHeaders, cellWidth))
+                sw.WriteLine(separator)
                 For Each row In rows
-                    sw.WriteLine(separator)
                     sw.WriteLine(FormatRow(row, cellWidth))
                 Next
             End Using
@@ -475,8 +571,6 @@ Public Class mainForm
         Loop
         Return sb.ToString()
     End Function
-
-
 
 #End Region
 
