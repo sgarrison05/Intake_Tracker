@@ -9,29 +9,26 @@ Public Class mainForm
 
     Private Const StatusWindowDays As Integer = 60
     Private Const PrePactWindowDays As Integer = 180
-    Private Const FieldCount As Integer = 12
-    Private Const LegacyFieldCount As Integer = 11   ' files written before the LE Agency column existed
-    Private Const LegacyLeaInsertIndex As Integer = 3
-    Private Const IntakeNewIndex As Integer = 6      ' Intake Completed follows Case Status
-    Private Const IntakeOldIndex As Integer = 10     ' older files: it followed Last Case Status
+    Private Const FieldCount As Integer = 13
     Private Const DateFmt As String = "yyyy-MM-dd"
     Private Const IdPrefix As String = "JV-"
 
-    Private Const DATA_FOLDER As String = "C:\Intake"
+    Private Const DATA_FOLDER As String = "D:\Temp\Intake"
     Private Const DATA_FILE As String = DATA_FOLDER & "\IntakeCases.txt"
 
-    ' Data file layout: tab-separated, header row first, dotted line after the header
-    ' and between records. Columns are padded so every record lines up under the header.
-    Private Const HeaderFirstField As String = "Child ID"
-    Private Const PadColumns As Integer = FieldCount - 1   ' every column except Progress Notes
+    ' Data file layout: tab-separated, header row first, dotted line after the header.
+    ' Columns are padded so every record lines up under the header. The child ID is
+    ' not written to the file. Age and Days Pending are calculated when the file is
+    ' written and are not read back.
+    Private Const PadColumns As Integer = FieldCount - 1   ' every column except Notes
     Private Const TabSize As Integer = 8
     Private Const SeparatorChar As Char = "-"c
     Private Const SeparatorExtra As Integer = 20           ' dotted line runs this far under the notes column
 
     Private ReadOnly FileHeaders() As String = {
-        "Child ID", "Case No.", "Child Name", "LE Agency", "Offense", "Case Status",
-        "Intake Comp", "Pre-PACT Date", "Date of Birth", "Initial Sub Date",
-        "Last Case Stat", "Notes"
+        "Child Name", "LE Agency", "Case No.", "Offense", "Case Status",
+        "Intake Comp", "Pre-PACT Date", "Date of Birth", "Age", "Initial Sub Date",
+        "Days Pending", "Last Case Stat", "Notes"
     }
 
     Private Const CaseGroupTitle As String = "Case Information"
@@ -57,7 +54,8 @@ Public Class mainForm
     Private loadingSelection As Boolean = False
 
     ' Child ID of the record currently on the form. Empty = new, unsaved child.
-    ' Never displayed; it is generated at first Save and stored in the data file only.
+    ' Never displayed and not written to the data file; it is generated at first Save
+    ' (or when a record is loaded from the file) and only identifies the record in memory.
     Private currentChildId As String = ""
 
 #Region "Form events"
@@ -152,7 +150,7 @@ Public Class mainForm
         Return age
     End Function
 
-    ' Age 17 or older = orange; older than 18 = red; otherwise the normal color.
+    ' Age 17 = orange; 18 or older = red; otherwise the normal color.
     Private Function AgeColor(age As Integer, normal As Color) As Color
         If age >= 18 Then Return Color.Red
         If age >= 17 Then Return Color.DarkOrange
@@ -378,19 +376,22 @@ Public Class mainForm
                         Continue Do
                     End If
 
-                    ' Remove the alignment padding (every column except Progress Notes)
+                    ' Remove the alignment padding (every column except Notes)
                     For i As Integer = 0 To PadColumns - 1
                         f(i) = f(i).TrimEnd(" "c)
                     Next
 
                     ' Header row is ignored
-                    If f(0).Trim().Equals(HeaderFirstField, StringComparison.OrdinalIgnoreCase) Then Continue Do
+                    If IsHeaderLine(f) Then Continue Do
 
                     Dim rec As CaseRecord = ParseRecord(f)
                     If rec Is Nothing Then
                         skipped += 1
                         Continue Do
                     End If
+
+                    ' The child ID is not in the file, so each record is given one when loaded
+                    rec.ChildId = GenerateChildId()
                     records.Add(rec)
                 Loop
             End Using
@@ -408,30 +409,30 @@ Public Class mainForm
         End If
     End Sub
 
-    ' Builds a record from a split line (already normalized to FieldCount fields).
-    ' Returns Nothing if the line is not a valid record.
+    ' Builds a record from a split line (FieldCount fields, padding already removed).
+    ' Returns Nothing if the line is not a valid record. Age (f(8)) and Days Pending (f(10))
+    ' are calculated values, so they are not read back. The child ID is assigned by the caller.
     Private Function ParseRecord(f() As String) As CaseRecord
         Dim rec As New CaseRecord
-        rec.ChildId = Unescape(f(0))
-        If rec.ChildId.Length = 0 Then Return Nothing
+        rec.ChildName = Unescape(f(0))
+        If rec.ChildName.Length = 0 Then Return Nothing
 
-        rec.CaseNo = Unescape(f(1))
-        rec.ChildName = Unescape(f(2))
-        rec.LEAgency = Unescape(f(3))
-        rec.Offense = Unescape(f(4))
-        rec.Status = Unescape(f(5))
+        rec.LEAgency = Unescape(f(1))
+        rec.CaseNo = Unescape(f(2))
+        rec.Offense = Unescape(f(3))
+        rec.Status = Unescape(f(4))
 
-        Dim intake As String = f(6).Trim()
+        Dim intake As String = f(5).Trim()
         rec.IntakeCompleted = intake.Equals("Yes", StringComparison.OrdinalIgnoreCase) OrElse
                               intake.Equals("True", StringComparison.OrdinalIgnoreCase) OrElse
                               intake = "1"
 
-        If Not TryParseDate(f(7), rec.PrePact) Then Return Nothing
-        If Not TryParseDate(f(8), rec.Dob) Then Return Nothing
+        If Not TryParseDate(f(6), rec.PrePact) Then Return Nothing
+        If Not TryParseDate(f(7), rec.Dob) Then Return Nothing
         If Not TryParseDate(f(9), rec.InitialSubmit) Then Return Nothing
-        If Not TryParseDate(f(10), rec.LastStatus) Then Return Nothing
+        If Not TryParseDate(f(11), rec.LastStatus) Then Return Nothing
 
-        rec.Notes = Unescape(f(11))
+        rec.Notes = Unescape(f(12))
         Return rec
     End Function
 
@@ -440,37 +441,16 @@ Public Class mainForm
         Return t.Length > 0 AndAlso t.All(Function(ch) ch = SeparatorChar)
     End Function
 
-    ' Splits a data line into fields and returns exactly FieldCount of them, in the
-    ' current column order. Tab-separated is the current format; the old "|"-separated
-    ' format is still readable. Lines from before the LE Agency column (11 fields) get a
-    ' blank LE Agency inserted, and lines from before Intake Completed moved up (it used
-    ' to follow Last Case Status) are rearranged. Everything is rewritten in the current
-    ' layout on the next save.
+    ' The header row is recognized by its first two column titles.
+    Private Function IsHeaderLine(f() As String) As Boolean
+        Return f(0).Trim().Equals(FileHeaders(0), StringComparison.OrdinalIgnoreCase) AndAlso
+               f(1).Trim().Equals(FileHeaders(1), StringComparison.OrdinalIgnoreCase)
+    End Function
+
+    ' Splits a data line on tabs. Returns Nothing if it has fewer than FieldCount fields.
     Private Function SplitLine(line As String) As String()
         Dim f() As String = line.Split(ControlChars.Tab)
-        If f.Length < LegacyFieldCount Then
-            f = line.Split("|"c)
-            If f.Length < LegacyFieldCount Then Return Nothing
-        End If
-
-        If f.Length = LegacyFieldCount Then
-            Dim fields As New List(Of String)(f)
-            fields.Insert(LegacyLeaInsertIndex, "")
-            f = fields.ToArray()
-        End If
-
-        ' Current layout has Last Case Status (a date) at position 10.
-        ' If something else is there, the line is in the older order: Intake Completed
-        ' came after Last Case Status, so move it up to follow Case Status.
-        Dim probe As Date
-        If Not TryParseDate(f(IntakeOldIndex).Trim(), probe) Then
-            Dim reordered As New List(Of String)(f)
-            Dim intakeValue As String = reordered(IntakeOldIndex)
-            reordered.RemoveAt(IntakeOldIndex)
-            reordered.Insert(IntakeNewIndex, intakeValue)
-            f = reordered.ToArray()
-        End If
-
+        If f.Length < FieldCount Then Return Nothing
         Return f
     End Function
 
@@ -481,10 +461,13 @@ Public Class mainForm
             If Not File.Exists(DATA_FILE) Then File.Create(DATA_FILE).Dispose()
 
             ' Build every row first so the column widths can be measured
+            Dim today As Date = Date.Today
             Dim rows As New List(Of String())
             For Each r In records
+                Dim age As Integer = CalcAge(r.Dob, today)
+                Dim pending As Integer = Math.Max(0, (today - r.InitialSubmit).Days)
+
                 rows.Add(New String() {
-                    Escape(r.ChildId),
                     Escape(r.ChildName),
                     Escape(r.LEAgency),
                     Escape(r.CaseNo),
@@ -493,7 +476,9 @@ Public Class mainForm
                     If(r.IntakeCompleted, "Yes", "No"),
                     r.PrePact.ToString(DateFmt),
                     r.Dob.ToString(DateFmt),
+                    If(age < 0, "", age.ToString()),
                     r.InitialSubmit.ToString(DateFmt),
+                    pending.ToString(),
                     r.LastStatus.ToString(DateFmt),
                     Escape(r.Notes)
                 })
@@ -527,7 +512,7 @@ Public Class mainForm
         End Try
     End Function
 
-    ' Pads each column to its width, ends it with a tab, and appends Progress Notes unpadded.
+    ' Pads each column to its width, ends it with a tab, and appends Notes unpadded.
     Private Function FormatRow(cells() As String, cellWidth() As Integer) As String
         Dim sb As New StringBuilder()
         For i As Integer = 0 To PadColumns - 1
@@ -560,7 +545,6 @@ Public Class mainForm
                 Select Case s(i)
                     Case "n"c : sb.Append(vbCrLf)
                     Case "t"c : sb.Append(vbTab)
-                    Case "p"c : sb.Append("|"c)   ' old pipe-format files
                     Case "\"c : sb.Append("\"c)
                     Case Else : sb.Append(s(i))
                 End Select
