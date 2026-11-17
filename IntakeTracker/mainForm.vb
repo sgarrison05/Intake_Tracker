@@ -13,7 +13,7 @@ Public Class mainForm
     Private Const DateFmt As String = "yyyy-MM-dd"
     Private Const IdPrefix As String = "JV-"
 
-    Private Const DATA_FOLDER As String = "D:\Temp\Intake"
+    Private Const DATA_FOLDER As String = "C:\Intake"
     Private Const DATA_FILE As String = DATA_FOLDER & "\IntakeCases.txt"
 
     ' Data file layout: tab-separated, header row first, dotted line after the header.
