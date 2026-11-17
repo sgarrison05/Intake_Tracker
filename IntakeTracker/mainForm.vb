@@ -150,6 +150,11 @@ Public Class mainForm
         Return age
     End Function
 
+    ' Days since the initial submit date (never negative).
+    Private Function DaysPending(initialSubmit As Date, onDate As Date) As Integer
+        Return Math.Max(0, (onDate - initialSubmit).Days)
+    End Function
+
     ' Age 17 = orange; 18 or older = red; otherwise the normal color.
     Private Function AgeColor(age As Integer, normal As Color) As Color
         If age >= 18 Then Return Color.Red
@@ -322,16 +327,20 @@ Public Class mainForm
 
     ' Columns must match the designer (subitems are added in column order):
     ' Child Name, LEA, Case No., Offense, Status, Intake, Age, Days Pending, Threshold.
-    ' The child ID is kept in the item's Tag only.
+    ' The child ID is kept in the item's Tag only. The list is always sorted by
+    ' Days Pending, highest first (children with the same number are ordered by name).
     Private Sub RefreshList()
         Dim today As Date = Date.Today
 
         loadingSelection = True
         lvRecords.BeginUpdate()
         lvRecords.Items.Clear()
-        For Each r In records.OrderBy(Function(x) x.ChildName)
+        Dim sorted = records.OrderByDescending(Function(x) DaysPending(x.InitialSubmit, today)) _
+                            .ThenBy(Function(x) x.ChildName)
+
+        For Each r In sorted
             Dim age As Integer = CalcAge(r.Dob, today)
-            Dim pending As Integer = Math.Max(0, (today - r.InitialSubmit).Days)
+            Dim pending As Integer = DaysPending(r.InitialSubmit, today)
 
             Dim item As New ListViewItem(r.ChildName)
             item.UseItemStyleForSubItems = False   ' lets the Age cell have its own color
@@ -349,6 +358,8 @@ Public Class mainForm
         Next
         lvRecords.EndUpdate()
         loadingSelection = False
+
+        lblRecordCount.Text = "Total Records: " & records.Count.ToString()
     End Sub
 
 #End Region
@@ -465,7 +476,7 @@ Public Class mainForm
             Dim rows As New List(Of String())
             For Each r In records
                 Dim age As Integer = CalcAge(r.Dob, today)
-                Dim pending As Integer = Math.Max(0, (today - r.InitialSubmit).Days)
+                Dim pending As Integer = DaysPending(r.InitialSubmit, today)
 
                 rows.Add(New String() {
                     Escape(r.ChildName),

@@ -68,6 +68,7 @@ Partial Class mainForm
         btnClose = New System.Windows.Forms.Button()
         lbl18BirthdayCap = New System.Windows.Forms.Label()
         lbl18Birthday = New System.Windows.Forms.Label()
+        lblRecordCount = New System.Windows.Forms.Label()
         grpCase.SuspendLayout()
         grpResults.SuspendLayout()
         grpNotes.SuspendLayout()
@@ -464,9 +465,17 @@ Partial Class mainForm
         colPending.Text = "Days Pending"
         colPending.Width = 90
         ' 
+        ' lblRecordCount
+        ' 
+        lblRecordCount.AutoSize = True
+        lblRecordCount.Location = New System.Drawing.Point(14, 660)
+        lblRecordCount.Name = "lblRecordCount"
+        lblRecordCount.TabIndex = 16
+        lblRecordCount.Text = "Total Records: 0"
+        ' 
         ' btnCalculate
         ' 
-        btnCalculate.Location = New System.Drawing.Point(12, 664)
+        btnCalculate.Location = New System.Drawing.Point(12, 688)
         btnCalculate.Name = "btnCalculate"
         btnCalculate.Size = New System.Drawing.Size(100, 34)
         btnCalculate.TabIndex = 11
@@ -475,7 +484,7 @@ Partial Class mainForm
         ' 
         ' btnSave
         ' 
-        btnSave.Location = New System.Drawing.Point(122, 664)
+        btnSave.Location = New System.Drawing.Point(122, 688)
         btnSave.Name = "btnSave"
         btnSave.Size = New System.Drawing.Size(100, 34)
         btnSave.TabIndex = 12
@@ -484,7 +493,7 @@ Partial Class mainForm
         ' 
         ' btnClear
         ' 
-        btnClear.Location = New System.Drawing.Point(232, 664)
+        btnClear.Location = New System.Drawing.Point(232, 688)
         btnClear.Name = "btnClear"
         btnClear.Size = New System.Drawing.Size(100, 34)
         btnClear.TabIndex = 13
@@ -493,7 +502,7 @@ Partial Class mainForm
         ' 
         ' btnDelete
         ' 
-        btnDelete.Location = New System.Drawing.Point(342, 664)
+        btnDelete.Location = New System.Drawing.Point(342, 688)
         btnDelete.Name = "btnDelete"
         btnDelete.Size = New System.Drawing.Size(100, 34)
         btnDelete.TabIndex = 14
@@ -502,7 +511,7 @@ Partial Class mainForm
         ' 
         ' btnClose
         ' 
-        btnClose.Location = New System.Drawing.Point(452, 664)
+        btnClose.Location = New System.Drawing.Point(452, 688)
         btnClose.Name = "btnClose"
         btnClose.Size = New System.Drawing.Size(100, 34)
         btnClose.TabIndex = 15
@@ -532,7 +541,8 @@ Partial Class mainForm
         ' 
         AutoScaleDimensions = New System.Drawing.SizeF(7F, 15F)
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        ClientSize = New System.Drawing.Size(908, 710)
+        ClientSize = New System.Drawing.Size(908, 734)
+        Controls.Add(lblRecordCount)
         Controls.Add(btnClose)
         Controls.Add(btnDelete)
         Controls.Add(btnClear)
@@ -609,4 +619,5 @@ Partial Class mainForm
     Friend WithEvents lbl18Birthday As System.Windows.Forms.Label
     Friend WithEvents colAge As System.Windows.Forms.ColumnHeader
     Friend WithEvents colPending As System.Windows.Forms.ColumnHeader
+    Friend WithEvents lblRecordCount As System.Windows.Forms.Label
 End Class
