@@ -115,11 +115,17 @@ Public Class mainForm
     Private Sub Calculate()
         Dim today As Date = Date.Today
 
-        ' Pre-PACT countdown: starts at 180 days on the Pre-PACT date and counts down
-        Dim prePactDeadline As Date = dtpPrePact.Value.Date.AddDays(PrePactWindowDays)
-        Dim prePactDays As Integer = Math.Min((prePactDeadline - today).Days, PrePactWindowDays)
-        lblPrePactDays.Text = PrePactCountdownText(prePactDays)
-        lblPrePactDays.ForeColor = If(prePactDays < 0, Color.Firebrick, SystemColors.ControlText)
+        ' Pre-PACT countdown: starts at 180 days on the Pre-PACT date and counts down.
+        ' It only applies once intake is completed; until then the Pre-PACT date is
+        ' ignored and the result shows "-".
+        If chkIntake.Checked Then
+            Dim prePactDays As Integer = PrePactDaysRemaining(dtpPrePact.Value.Date, today)
+            lblPrePactDays.Text = PrePactCountdownText(prePactDays)
+            lblPrePactDays.ForeColor = If(prePactDays < 0, Color.Firebrick, SystemColors.ControlText)
+        Else
+            lblPrePactDays.Text = "-"
+            lblPrePactDays.ForeColor = SystemColors.ControlText
+        End If
 
         ' Current age in years (orange at 17 or older, red when over 18)
         Dim dob As Date = dtpDob.Value.Date
@@ -142,6 +148,13 @@ Public Class mainForm
         lblStaffing.Text = CountdownText(staffingDays)
         lblStaffing.ForeColor = If(staffingDays < 0, Color.Firebrick, SystemColors.ControlText)
     End Sub
+
+    ' Days left in the 180-day Pre-PACT window: 180 on the Pre-PACT date, counting down.
+    ' A Pre-PACT date in the future shows 180 (the countdown hasn't started); negative = past due.
+    Private Function PrePactDaysRemaining(prePactDate As Date, onDate As Date) As Integer
+        Dim deadline As Date = prePactDate.AddDays(PrePactWindowDays)
+        Return Math.Min((deadline - onDate).Days, PrePactWindowDays)
+    End Function
 
     ' Whole years between the date of birth and the given date.
     Private Function CalcAge(dob As Date, onDate As Date) As Integer
@@ -326,7 +339,7 @@ Public Class mainForm
 #Region "Records list"
 
     ' Columns must match the designer (subitems are added in column order):
-    ' Child Name, LEA, Case No., Offense, Status, Intake, Age, Days Pending, Threshold.
+    ' Child Name, LEA, Case No., Offense, Status, Intake, Age, Days Pending, Days Remaining.
     ' The child ID is kept in the item's Tag only. The list is always sorted by
     ' Days Pending, highest first (children with the same number are ordered by name).
     Private Sub RefreshList()
@@ -353,7 +366,17 @@ Public Class mainForm
             Dim ageCell As ListViewItem.ListViewSubItem = item.SubItems.Add(If(age < 0, "", age.ToString()))
             ageCell.ForeColor = AgeColor(age, lvRecords.ForeColor)
             item.SubItems.Add(pending.ToString())
-            item.SubItems.Add(r.LastStatus.AddDays(StatusWindowDays).ToString("MM/dd/yyyy"))
+
+            ' The Pre-PACT countdown only applies once intake is completed;
+            ' until then the Pre-PACT date is ignored and the cell shows "-".
+            If r.IntakeCompleted Then
+                Dim remaining As Integer = PrePactDaysRemaining(r.PrePact, today)
+                Dim remainingCell As ListViewItem.ListViewSubItem = item.SubItems.Add(remaining.ToString())
+                If remaining < 0 Then remainingCell.ForeColor = Color.Firebrick
+            Else
+                item.SubItems.Add("-")
+            End If
+
             lvRecords.Items.Add(item)
         Next
         lvRecords.EndUpdate()

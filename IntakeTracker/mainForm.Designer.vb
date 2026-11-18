@@ -38,6 +38,8 @@ Partial Class mainForm
         dtpLastStatus = New System.Windows.Forms.DateTimePicker()
         chkIntake = New System.Windows.Forms.CheckBox()
         grpResults = New System.Windows.Forms.GroupBox()
+        lbl18BirthdayCap = New System.Windows.Forms.Label()
+        lbl18Birthday = New System.Windows.Forms.Label()
         lblPrePactCap = New System.Windows.Forms.Label()
         lblPrePactDays = New System.Windows.Forms.Label()
         lblAgeCap = New System.Windows.Forms.Label()
@@ -60,14 +62,12 @@ Partial Class mainForm
         colIntake = New System.Windows.Forms.ColumnHeader()
         colAge = New System.Windows.Forms.ColumnHeader()
         colPending = New System.Windows.Forms.ColumnHeader()
-        colThreshold = New System.Windows.Forms.ColumnHeader()
+        colRemaining = New System.Windows.Forms.ColumnHeader()
         btnCalculate = New System.Windows.Forms.Button()
         btnSave = New System.Windows.Forms.Button()
         btnClear = New System.Windows.Forms.Button()
         btnDelete = New System.Windows.Forms.Button()
         btnClose = New System.Windows.Forms.Button()
-        lbl18BirthdayCap = New System.Windows.Forms.Label()
-        lbl18Birthday = New System.Windows.Forms.Label()
         lblRecordCount = New System.Windows.Forms.Label()
         grpCase.SuspendLayout()
         grpResults.SuspendLayout()
@@ -278,10 +278,29 @@ Partial Class mainForm
         grpResults.Controls.Add(lblStaffing)
         grpResults.Location = New System.Drawing.Point(512, 12)
         grpResults.Name = "grpResults"
-        grpResults.Size = New System.Drawing.Size(384, 424)
+        grpResults.Size = New System.Drawing.Size(397, 424)
         grpResults.TabIndex = 1
         grpResults.TabStop = False
         grpResults.Text = "Results"
+        ' 
+        ' lbl18BirthdayCap
+        ' 
+        lbl18BirthdayCap.AutoSize = True
+        lbl18BirthdayCap.Location = New System.Drawing.Point(14, 91)
+        lbl18BirthdayCap.Name = "lbl18BirthdayCap"
+        lbl18BirthdayCap.Size = New System.Drawing.Size(107, 15)
+        lbl18BirthdayCap.TabIndex = 10
+        lbl18BirthdayCap.Text = "18th Birthday Date:"
+        ' 
+        ' lbl18Birthday
+        ' 
+        lbl18Birthday.AutoSize = True
+        lbl18Birthday.Font = New System.Drawing.Font("Segoe UI", 11F, Drawing.FontStyle.Bold)
+        lbl18Birthday.Location = New System.Drawing.Point(14, 111)
+        lbl18Birthday.Name = "lbl18Birthday"
+        lbl18Birthday.Size = New System.Drawing.Size(15, 20)
+        lbl18Birthday.TabIndex = 11
+        lbl18Birthday.Text = "-"
         ' 
         ' lblPrePactCap
         ' 
@@ -410,13 +429,13 @@ Partial Class mainForm
         ' 
         ' lvRecords
         ' 
-        lvRecords.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {colChild, colLEA, colCaseNo, colOffense, colStatus, colIntake, colAge, colPending, colThreshold})
+        lvRecords.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {colChild, colLEA, colCaseNo, colOffense, colStatus, colIntake, colAge, colPending, colRemaining})
         lvRecords.FullRowSelect = True
         lvRecords.GridLines = True
         lvRecords.Location = New System.Drawing.Point(10, 22)
         lvRecords.MultiSelect = False
         lvRecords.Name = "lvRecords"
-        lvRecords.Size = New System.Drawing.Size(868, 178)
+        lvRecords.Size = New System.Drawing.Size(887, 178)
         lvRecords.TabIndex = 0
         lvRecords.UseCompatibleStateImageBehavior = False
         lvRecords.View = System.Windows.Forms.View.Details
@@ -445,33 +464,29 @@ Partial Class mainForm
         colStatus.Text = "Status"
         colStatus.Width = 120
         ' 
-        ' colThreshold
-        ' 
-        colThreshold.Text = "Threshold"
-        colThreshold.Width = 85
-        ' 
         ' colIntake
         ' 
         colIntake.Text = "Intake"
+        colIntake.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         colIntake.Width = 50
         ' 
         ' colAge
         ' 
         colAge.Text = "Age"
+        colAge.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         colAge.Width = 45
         ' 
         ' colPending
         ' 
         colPending.Text = "Days Pending"
+        colPending.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         colPending.Width = 90
         ' 
-        ' lblRecordCount
+        ' colRemaining
         ' 
-        lblRecordCount.AutoSize = True
-        lblRecordCount.Location = New System.Drawing.Point(14, 660)
-        lblRecordCount.Name = "lblRecordCount"
-        lblRecordCount.TabIndex = 16
-        lblRecordCount.Text = "Total Records: 0"
+        colRemaining.Text = "PACT Countdown"
+        colRemaining.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        colRemaining.Width = 110
         ' 
         ' btnCalculate
         ' 
@@ -518,30 +533,20 @@ Partial Class mainForm
         btnClose.Text = "Close"
         btnClose.UseVisualStyleBackColor = True
         ' 
-        ' lbl18BirthdayCap
+        ' lblRecordCount
         ' 
-        lbl18BirthdayCap.AutoSize = True
-        lbl18BirthdayCap.Location = New System.Drawing.Point(14, 91)
-        lbl18BirthdayCap.Name = "lbl18BirthdayCap"
-        lbl18BirthdayCap.Size = New System.Drawing.Size(107, 15)
-        lbl18BirthdayCap.TabIndex = 10
-        lbl18BirthdayCap.Text = "18th Birthday Date:"
-        ' 
-        ' lbl18Birthday
-        ' 
-        lbl18Birthday.AutoSize = True
-        lbl18Birthday.Font = New System.Drawing.Font("Segoe UI", 11F, Drawing.FontStyle.Bold)
-        lbl18Birthday.Location = New System.Drawing.Point(14, 111)
-        lbl18Birthday.Name = "lbl18Birthday"
-        lbl18Birthday.Size = New System.Drawing.Size(15, 20)
-        lbl18Birthday.TabIndex = 11
-        lbl18Birthday.Text = "-"
+        lblRecordCount.AutoSize = True
+        lblRecordCount.Location = New System.Drawing.Point(14, 660)
+        lblRecordCount.Name = "lblRecordCount"
+        lblRecordCount.Size = New System.Drawing.Size(89, 15)
+        lblRecordCount.TabIndex = 16
+        lblRecordCount.Text = "Total Records: 0"
         ' 
         ' mainForm
         ' 
         AutoScaleDimensions = New System.Drawing.SizeF(7F, 15F)
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        ClientSize = New System.Drawing.Size(908, 734)
+        ClientSize = New System.Drawing.Size(932, 734)
         Controls.Add(lblRecordCount)
         Controls.Add(btnClose)
         Controls.Add(btnDelete)
@@ -566,6 +571,7 @@ Partial Class mainForm
         grpNotes.PerformLayout()
         grpRecords.ResumeLayout(False)
         ResumeLayout(False)
+        PerformLayout()
     End Sub
 
     Friend WithEvents grpCase As System.Windows.Forms.GroupBox
@@ -605,7 +611,7 @@ Partial Class mainForm
     Friend WithEvents colChild As System.Windows.Forms.ColumnHeader
     Friend WithEvents colOffense As System.Windows.Forms.ColumnHeader
     Friend WithEvents colStatus As System.Windows.Forms.ColumnHeader
-    Friend WithEvents colThreshold As System.Windows.Forms.ColumnHeader
+    Friend WithEvents colRemaining As System.Windows.Forms.ColumnHeader
     Friend WithEvents colIntake As System.Windows.Forms.ColumnHeader
     Friend WithEvents btnCalculate As System.Windows.Forms.Button
     Friend WithEvents btnSave As System.Windows.Forms.Button
